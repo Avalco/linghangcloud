@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/drawerlayout">
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <include layout="@layout/actionbar_home"/>
+        <View
+            android:layout_marginTop="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"/>
+        <TextView
+            android:id="@+id/taskitem"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:text="Item"
+            android:textColor="#000"
+            android:textSize="30sp"
+            android:layout_height="200dp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"/>
+    </LinearLayout>
+</FrameLayout>
+    <fragment
+        android:layout_width="300dp"
+        android:layout_gravity="start"
+        android:name="com.linghangcloud.android.MenuFragment"
+        android:layout_height="match_parent"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>
