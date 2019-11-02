@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="75dp"
+    >
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/item_homework_file_pic"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:src="@drawable/testpicsecond"
+        />
+
+    <TextView
+        android:id="@+id/item_homework_filename"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_toLeftOf="@id/file_download_button"
+        android:layout_toRightOf="@id/item_homework_file_pic"
+        android:maxHeight="20dp"
+        android:width="1dp"
+        android:textSize="13dp"
+        android:text="性感程序员在线写bug.avi" />
+
+    <TextView
+
+        android:id="@+id/item_homework_username_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/item_homework_filename"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@id/item_homework_file_pic"
+        android:text="作者:"
+        android:textSize="13dp"
+        />
+    <TextView
+        android:id="@+id/item_homework_username"
+        android:layout_below="@id/item_homework_filename"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/item_homework_username_text"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:text="android组-计科1801赵世龙"
+        android:maxHeight="30dp"
+        android:textSize="13dp"
+        />
+    <TextView
+        android:id="@+id/file_download_button"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:gravity="center"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:text="下载"
+        />
+
+</RelativeLayout>

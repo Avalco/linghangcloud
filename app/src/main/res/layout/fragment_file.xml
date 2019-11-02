@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    >
+    <RelativeLayout
+        android:id="@+id/homework_title"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/themecolor"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="作业情况"
+            android:textSize="20dp"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            />
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/file_re"
+        android:layout_below="@id/homework_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </androidx.recyclerview.widget.RecyclerView>
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/themecolor"
+        android:layout_alignParentBottom="true"
+        >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/fragment_button_submitfile"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/detailpic"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/outputfile_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/outputfilepic" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/outputfile_button"
+            android:layout_alignParentRight="true"
+
+            android:layout_marginLeft="30dp"
+
+            android:layout_marginTop="-1dp"
+            android:layout_marginRight="16dp"
+            android:text="上传作业"
+            android:textColor="@android:color/white"
+            android:textSize="10dp" />
+        <LinearLayout
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            >
+            <TextView
+                android:id="@+id/fragment_file_submitnumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="20dp"
+                android:textColor="@android:color/white"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" / "
+                android:textSize="20dp"
+
+                />
+
+            <TextView
+                android:id="@+id/fragment_file_sumnumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="20dp"
+                android:textColor="@android:color/white"
+                />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</RelativeLayout>
