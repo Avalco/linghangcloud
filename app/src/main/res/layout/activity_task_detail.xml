@@ -1,15 +1,323 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TaskDetailActivity">
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:textSize="40sp"
-    android:textColor="#000"
-    android:gravity="center"
-    android:text="任务详情"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    android:background="@android:color/white"
+    tools:context=".TaskDetail.TaskDetailActivity">
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/task_menu_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!--抽屉布局中的唯一相对布局 -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            >
+            <!--头部导航栏 相对布局-->
+            <RelativeLayout
+                android:id="@+id/tittle"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@android:color/holo_blue_light"
+                >
+                <Button
+                    android:id="@+id/task_back_button"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/ic_arrow_back_black_24dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_centerVertical="true"
+
+                    />
+                <TextView
+                    android:id="@+id/task_title"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:text="题目"
+                    android:textColor="@android:color/white"
+                    android:textSize="20dp"
+                    android:gravity="center"
+                    android:layout_centerInParent="true"
+                    />
+
+                <Button
+                    android:id="@+id/task_menu_button"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/ic_menu_black_24dp" />
+            </RelativeLayout>
+            <!--头部导航栏结束-->
+
+            <!--被隐藏的评论吸顶框-->
+            <LinearLayout
+                android:layout_below="@id/tittle"
+                android:id="@+id/task_test1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@android:color/white"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/black">
+
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="评论"
+                    android:textSize="15dp"
+                    android:textColor="@android:color/black"
+                    android:layout_margin="15dp"
+                    />
+                    <Button
+                        android:id="@+id/task_upperButton"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/upperpic"
+                        android:layout_marginRight="15dp"
+                        />
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/black">
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!--被隐藏的评论吸顶框结束-->
+
+
+            <ScrollView
+                android:id="@+id/task_scroll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/task_test1"
+                android:layout_above="@id/nagtive">
+                <!--卷轴内唯一的线性布局-->
+                <LinearLayout
+                    android:layout_below="@id/tittle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/background"
+                    android:orientation="vertical"
+                    >
+
+                    <!--测量布局长度使用的布局 线性布局-->
+                    <LinearLayout
+                        android:id="@+id/task_MainDetailLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        >
+                    <!--个人信息栏 相对布局-->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@android:color/white">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/punnish_pic"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:src="@drawable/ic_clear_black_24dp" />
+
+                        <TextView
+                            android:id="@+id/punnish_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="9dp"
+                            android:layout_toRightOf="@id/punnish_pic"
+                            android:text="jk1801-赵世龙"
+                            android:textColor="@android:color/black" />
+                        <TextView
+                            android:id="@+id/punnish_group"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/punnish_name"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_toRightOf="@id/punnish_pic"
+                            android:text="全领航最帅的男人" />
+
+                        <TextView
+                            android:id="@+id/punnish_seach"
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentRight="true"
+                            android:text="查看"
+                            android:textColor="@android:color/holo_purple"
+                            android:gravity="center"
+                            />
+                    </RelativeLayout>
+                    <!--个人信息栏结束-->
+
+                    <!--内容文本-->
+                    <TextView
+                        android:id="@+id/task_detail"
+                        android:background="@android:color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="Unit 1
+大学已经不再特别了
+1 有这么一种说法：“要是你能记得20 世纪60 年代的任何事情，你就没有真正经历过那段岁月。”对于在大麻烟雾中度过大学时光的那些人，这话可能是真的。但是，20 世纪60 年代有一件事人人都记得，那就是：上大学是你一生中最激动人心、最刺激的经历。
+ 20 世纪60 年代，加州的高校把本州变成了世界第七大经济实体。然而，加州大学的主校园伯克利分校也以学生示威、罢课以及激进的政治氛围而著名。1966 年，罗纳德·里根竞选加州州长，他
+问加州是否允许“一所伟大的大学被喧闹的、持不一意见的少数人征服。”自由派人士回答说，大学之所以伟大正是因为它们有能力容忍喧闹的、持不同意见的少数人。
+3 在欧洲的大学校园里，大学生以新的姿态和激情地投入到自由和正义的事业中去，大规模的社会主义或共产主义运动引发了他们与当权者之间日益升级的暴力冲突。许多抗议是针对越南战争的。可
+是在法国，巴黎大学的学生与工会联盟，发动了一场大罢工，最终导致了戴高乐总统辞职。
+4  20 世纪60 年代大学生活的特点并不仅仅是激进的行动。不论在什么地方，上大学都意味着你初次品尝真正自由的滋味，初次品尝深更半夜在宿舍或学生活动室里讨论人生意义的滋味。你往往得上了大学才得以阅读你的第一本禁书，看你的第一部独立影人电影，或者找到和你一样痴迷吉米·亨德里克斯或伦尼·布鲁斯的志同道合者。那是一段难以想象的自由时光，你一生中最无拘无束的时光。
+5 可如今那份激情哪儿去了？大学怎么了？现在，政治、社会和创造意识的觉醒似乎不是凭借大学的助力，而是冲破其阻力才发生的。当然，一点不假，高等教育仍然重要。例如，在英国，布莱尔首
+相几乎实现了到2010 年让50％的30 岁以下的人上大学的目标，（即使愤世嫉俗的人会说，这是要把他们排除在失业统计数据之外）。不过，大学教育已不再是全民重视的话题了。如今，大学被视为人们急于逃离的一种小城镇。有些人辍学，但大多数已经有些麻木，还是坚持混到毕业，因为离开学校实在是太费事了。
+6 没有了20 世纪60 年代大学生发现的令人头脑发热的自由气氛，如今的大学生要严肃得多。英国文化促进会最近做了一项调查，研究外国留学生在决定上哪所大学时考虑的因素。这些因素从高到低依次是：课程质量、就业前景、学费负担、人身安全问题、生活方式，以及各种便利。大学已变成实现目的的手段，是在就业市场上增加就业几率的一个机会，上大学本身不再是目的，它给你提供一个机会，让你暂时想象一下：你能够改变世界。
+7 童年与大学之间的距离已缩小了，大学与现实世界之间的距离也缩小了。其中的一个原因可能是经济方面的。在一个没有保障的世界里，现在的许多孩子依赖父母资助的时间比以前的孩子更长。21世纪的学生大学毕业后根本无法自立门户，因为那太昂贵了。另一个可能的原因是通讯革命。儿子或女儿每学期往家里打一两回电话的日子一去不复返了。如今，大学生通过手机与父母保持着脐带式联
+系。至于寻找痴迷无名文学或音乐的同道好友嘛，没问题，我们有互联网和聊天室来帮助我们做到这一点。
+8 “在那黎明时分活着是至福，
+9 但年轻就等于身在天堂！”
+10 华兹华斯的诗句说的可能是法国大革命，但是对于20 世纪60 年代的大学生而言，这样的诗句同样真实生动。可是为什么对于如今的大学生来说，它们怎么就不真实了呢？
+Active reading (2)"
+                        android:textColor="@android:color/black"
+                        />
+
+                    </LinearLayout>
+                    <!--上方为测试长度布局 线性布局-->
+
+
+                        <!--评论提示框 线性布局-->
+                        <LinearLayout
+                            android:id="@+id/task_ThirldLinearLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@android:color/white"
+                            >
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@android:color/black"></LinearLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="评论"
+                                android:textSize="15dp"
+                                android:textColor="@android:color/black"
+                                android:layout_margin="15dp"
+                                />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@android:color/black">
+
+                            </LinearLayout>
+                        </LinearLayout>
+                        <!--评论提示框结束-->
+
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/task_commit_re"
+                            android:background="@color/background"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                        </androidx.recyclerview.widget.RecyclerView>
+                    </LinearLayout>
+            </ScrollView>
+
+            <!--底部导航栏 相对布局-->
+            <RelativeLayout
+                android:id="@+id/nagtive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:background="@android:color/holo_blue_light"
+                >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_centerVertical="true"
+                    >
+
+                    <TextView
+                        android:id="@+id/num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="10dp"
+                        android:text="评论数"
+                        android:textSize="15dp"
+                        android:textColor="@android:color/white"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="15"
+                        android:layout_below="@id/num"
+                        android:textColor="@android:color/white"
+                        android:layout_marginLeft="30dp"
+                        />
+                </LinearLayout>
+
+                <EditText
+                    android:layout_width="200dp"
+                    android:id="@+id/input"
+                    android:layout_height="wrap_content"
+                    android:maxLines="5"
+                    android:maxWidth="100dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/task_back"
+                    android:textColor="@android:color/black"
+                    android:hint="聊点什么把"
+                    android:textSize="15dp"
+                    android:gravity="center"
+                    android:textColorHint="@android:color/tertiary_text_light"
+                    android:layout_centerInParent="true"
+                    />
+                <TextView
+                    android:id="@+id/task_input_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="走你"
+                    android:layout_toRightOf="@id/input"
+                    android:layout_marginLeft="30dp"
+                    android:layout_centerInParent="true"
+                    android:textColor="@android:color/white"
+                    />
+            </RelativeLayout>
+            <!--底部导航栏 结束-->
+        </RelativeLayout>
+
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="com.linghangcloud.android.TaskDetail.FileFragment"
+            android:layout_gravity="end"
+            >
+
+        </fragment>
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+</RelativeLayout>

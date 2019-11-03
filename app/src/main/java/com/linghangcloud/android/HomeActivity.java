@@ -11,6 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.linghangcloud.android.GSON.TaskDetail;
+import com.linghangcloud.android.TaskDetail.TaskDetailActivity;
+
 public class HomeActivity extends AppCompatActivity {
 private Button menu;
 private TextView item;
