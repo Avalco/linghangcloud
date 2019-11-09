@@ -20,6 +20,9 @@ import com.linghangcloud.android.db.Task;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.linghangcloud.android.GSON.TaskDetail;
+import com.linghangcloud.android.TaskDetail.TaskDetailActivity;
+
 public class HomeActivity extends AppCompatActivity {
 private Button menu;
 private MyListView item;
