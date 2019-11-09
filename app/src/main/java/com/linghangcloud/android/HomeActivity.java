@@ -5,10 +5,14 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +33,7 @@ private MyListView item;
 private DrawerLayout drawerLayout;
 private Button release;
     private long exitTime = 0;
+    private static final String TAG = "HomeActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +55,13 @@ private Button release;
             list.add(new Task("任务"+i,"安卓","1111111111111111111四大发送到发四大发送到发发 撒旦法师手动阀手动阀asd速度手动阀阿斯顿发阿达东风发"," 11 ","2019-9-1","2019-9-2","1111"));
         }
         item.setAdapter(new TaskAdapter(list,HomeActivity.this));
+        item.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(HomeActivity.this, TaskDetailActivity.class);
+                startActivity(intent);
+            }
+        });
         release.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,6 +69,8 @@ private Button release;
                 startActivity(intent);
             }
         });
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Log.d(TAG, "onCreate: " + preferences.getString("token", null));
     }
 
           @Override

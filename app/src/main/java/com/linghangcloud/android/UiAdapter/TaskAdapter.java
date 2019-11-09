@@ -1,6 +1,7 @@
 package com.linghangcloud.android.UiAdapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.linghangcloud.android.HomeActivity;
 import com.linghangcloud.android.R;
+import com.linghangcloud.android.TaskDetail.TaskDetailActivity;
 import com.linghangcloud.android.UiComponent.TaskItemLayout;
 import com.linghangcloud.android.db.Task;
 
@@ -66,6 +69,13 @@ public class TaskAdapter extends BaseAdapter {
         holder.content.setText(myModel.getContent());
         holder.createtime.setText(myModel.getCreatetime()+"发布");
         holder.deadline.setText(myModel.getDeadline()+"截止");
+//        holder.content.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent=new Intent(mContext, TaskDetailActivity.class);
+//                mContext.startActivity(intent);
+//            }
+//        });
         final TaskItemLayout finalContentView = (TaskItemLayout) contentView;
 //        holder.toTop.setOnClickListener(new View.OnClickListener() {
 //            @Override
