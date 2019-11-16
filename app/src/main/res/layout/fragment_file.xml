@@ -3,22 +3,21 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
-    >
+    android:background="@android:color/white">
+
     <RelativeLayout
         android:id="@+id/homework_title"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/themecolor"
-        >
+        android:background="@color/themecolor">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="作业情况"
             android:textSize="20dp"
             android:textColor="@android:color/white"
-            android:gravity="center"
-            />
+            android:gravity="center" />
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -28,13 +27,14 @@
         android:layout_height="match_parent">
 
     </androidx.recyclerview.widget.RecyclerView>
+
     <RelativeLayout
 
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/themecolor"
-        android:layout_alignParentBottom="true"
-        >
+        android:layout_alignParentBottom="true">
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/fragment_button_submitfile"
             android:layout_width="50dp"
@@ -42,8 +42,7 @@
             android:layout_alignParentLeft="true"
             android:src="@drawable/detailpic"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            />
+            android:layout_marginLeft="15dp" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/outputfile_button"
@@ -68,20 +67,20 @@
             android:text="上传作业"
             android:textColor="@android:color/white"
             android:textSize="10dp" />
+
         <LinearLayout
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            >
+            android:layout_centerInParent="true">
+
             <TextView
                 android:id="@+id/fragment_file_submitnumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:textSize="20dp"
-                android:textColor="@android:color/white"
-                />
+                android:textColor="@android:color/white" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -97,8 +96,7 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:textSize="20dp"
-                android:textColor="@android:color/white"
-                />
+                android:textColor="@android:color/white" />
         </LinearLayout>
 
 

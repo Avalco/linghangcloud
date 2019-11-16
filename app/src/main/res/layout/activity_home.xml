@@ -14,23 +14,12 @@
         android:orientation="vertical"
         >
         <include layout="@layout/actionbar_home"/>
-        <View
-            android:layout_marginTop="1dp"
+        <com.linghangcloud.android.UiComponent.MyListView
+            android:id="@+id/tasklist"
+            android:overScrollMode="never"
+            android:scrollbars="none"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#000"/>
-        <TextView
-            android:id="@+id/taskitem"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:text="Item"
-            android:textColor="#000"
-            android:textSize="30sp"
-            android:layout_height="200dp"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#000"/>
+            android:layout_height="match_parent"/>
     </LinearLayout>
 </FrameLayout>
     <fragment

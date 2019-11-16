@@ -1,57 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
-    android:minHeight="110dp"
-    >
+    android:minHeight="110dp">
 
 
     <!--左侧隔离栏-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <RelativeLayout
             android:id="@+id/commit_childline"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:minHeight="110dp"
-            >
-        <RelativeLayout
-          android:id="@+id/commit_leftline"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:minHeight="110dp"
-            >
-            <LinearLayout
-                android:layout_width="5dp"
+            android:minHeight="110dp">
+
+            <RelativeLayout
+                android:id="@+id/commit_leftline"
+                android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:minHeight="111dp"
+                android:minHeight="110dp">
 
-                android:layout_alignParentRight="true"
-                android:background="@color/background"
-                android:orientation="horizontal"
-                >
-            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent"
+                    android:minHeight="111dp"
 
-        </RelativeLayout>
+                    android:layout_alignParentRight="true"
+                    android:background="@color/background"
+                    android:orientation="horizontal"></LinearLayout>
+
+            </RelativeLayout>
+
             <LinearLayout
                 android:id="@+id/commit_headline"
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
                 android:layout_below="@id/commit_leftline"
                 android:background="@color/background"
-                android:orientation="horizontal">
-            </LinearLayout>
+                android:orientation="horizontal"></LinearLayout>
         </RelativeLayout>
         <!--左侧隔离栏结束-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/commit_childline"
-            >
+            android:layout_toRightOf="@id/commit_childline">
+
             <RelativeLayout
                 android:id="@+id/commit_mainlayout"
                 android:layout_width="match_parent"
@@ -61,8 +58,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_margin="5dp"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/commit_pic"
@@ -70,48 +66,50 @@
                     android:layout_height="50dp"
                     android:layout_margin="5dp"
                     android:src="@drawable/testpic" />
+
                 <LinearLayout
                     android:layout_toRightOf="@id/commit_pic"
                     android:layout_toLeftOf="@id/commit_delete"
                     android:id="@+id/commit_value"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    >
+                    android:orientation="vertical">
+
                     <LinearLayout
                         android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
+
                         <TextView
                             android:id="@+id/commit_user"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="lskdjflsdkfjlsdkfjlsdk"
-                            android:textColor="@android:color/black"
-                            />
+                            android:textColor="@android:color/black" />
+
                         <ImageView
                             android:id="@+id/commit_to"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:src="@drawable/ic_navigate_next_black_24dp"
-                            />
+                            android:src="@drawable/ic_navigate_next_black_24dp" />
+
                         <TextView
                             android:id="@+id/commit_reuser"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="alsdkfjlskjflksdjflsk"
-                            android:textColor="@android:color/black"
-                            />
+                            android:textColor="@android:color/black" />
                     </LinearLayout>
+
                     <TextView
                         android:id="@+id/commit_detail"
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="评论《超帅程序员的评论》"
-                        />
+                        android:text="评论《超帅程序员的评论》" />
 
                 </LinearLayout>
+
                 <Button
                     android:id="@+id/commit_delete"
                     android:layout_width="20dp"
@@ -119,17 +117,16 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/ic_clear_black_24dp"
-                    />
+                    android:background="@drawable/ic_clear_black_24dp" />
 
             </RelativeLayout>
+
             <LinearLayout
                 android:id="@+id/commit_tailline"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/background"
-                android:layout_below="@id/commit_mainlayout"
-                ></LinearLayout>
+                android:layout_below="@id/commit_mainlayout"></LinearLayout>
 
         </RelativeLayout>
 

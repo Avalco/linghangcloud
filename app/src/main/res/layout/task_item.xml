@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.linghangcloud.android.UiComponent.TaskItemLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="4dp"
+        android:paddingLeft="8dp"
+        android:paddingTop="4dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:orientation="vertical">
+            <TextView
+                android:textSize="18sp"
+                android:textColor="#000"
+                android:id="@+id/task_head"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:singleLine="true"
+                android:text="任务标题" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+                <TextView
+                    android:textSize="12sp"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#4E4E4E"
+                    android:id="@+id/createtime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:singleLine="true"
+                    android:text="2019-9-1发布"
+                    android:layout_marginStart="5dp" />
+                <TextView
+                    android:layout_marginLeft="20dp"
+                    android:textSize="12sp"
+                    android:textColor="#4E4E4E"
+                    android:id="@+id/deadline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:singleLine="true"
+                    android:text="2019-9-1截止"
+                    android:layout_marginStart="20dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp">
+                <TextView
+                    android:id="@+id/taskcontent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:textColor="#000"
+                    android:textSize="14sp"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/menu"
+        android:layout_width="160dp"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+<!--        <TextView-->
+<!--            android:id="@+id/to_top"-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="@android:color/darker_gray"-->
+<!--            android:gravity="center"-->
+<!--            android:text="置顶" />-->
+        <TextView
+            android:id="@+id/modify"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_orange_dark"
+            android:gravity="center"
+            android:text="修改" />
+        <TextView
+            android:id="@+id/delete"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_red_light"
+            android:gravity="center"
+            android:text="删除" />
+    </LinearLayout>
+
+</com.linghangcloud.android.UiComponent.TaskItemLayout>
