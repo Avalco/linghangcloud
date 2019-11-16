@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Token {
     private String code;
+
     @SerializedName("data")
     private String token;
 

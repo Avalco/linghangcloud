@@ -24,12 +24,14 @@
         android:id="@+id/file_re"
         android:layout_below="@id/homework_title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/file_bottom"
+        >
 
     </androidx.recyclerview.widget.RecyclerView>
 
     <RelativeLayout
-
+        android:id="@+id/file_bottom"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/themecolor"

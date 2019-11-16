@@ -12,8 +12,11 @@ import okhttp3.Response;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -30,6 +33,7 @@ import com.google.gson.reflect.TypeToken;
 import com.linghangcloud.android.GSON.TaskDetail;
 import com.linghangcloud.android.R;
 import com.linghangcloud.android.Util.Util;
+import com.linghangcloud.android.Util.Utility;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,7 +59,7 @@ public class TaskDetailActivity extends AppCompatActivity {
     private LinearLayout CommitTitle;
     private List<Commit> commitList = new ArrayList<>();
     private String UrlOfTask = "http://fjxtest.club:9090/task/findtask?taskid=";
-    private String taskid = "34";
+    private String taskid = "28";
     private String[] groupName = {"后台组大神", "前端组大神", "安卓组大神"};
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -184,9 +188,12 @@ public class TaskDetailActivity extends AppCompatActivity {
     }
 
     private void InitTaskDetail() {
+        SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(this);
         String url = UrlOfTask + taskid;
+        final String token=prefs.getString("token",null);
+        final String headname="access_token";
         try {
-            new Util().getwithokhttp(url, new Callback() {
+            new Util().getwithokhttphead(url,token,headname,new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
@@ -195,15 +202,16 @@ public class TaskDetailActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(final Call call, Response response) throws IOException {
                     String responseBody = response.body().string();
-                    Gson gson = new Gson();
+
                     Log.e("服务器数据 TaskDetail：", responseBody);
-                    final TaskDetail taskDetail = gson.fromJson(responseBody, new TypeToken<TaskDetail>() {
-                    }.getType());
+                    Log.e("服务器数据 TOKEN：", token);
+                    final TaskDetail taskDetail = Utility.handleTaskDetailResponse(responseBody);
+                    Log.e("JSON ：test：", taskDetail.getHeadline());
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             title.setText(taskDetail.getHeadline());
-                            detail.setText(taskDetail.getDetails());
+                            detail.setText(Html.fromHtml(taskDetail.getDetails()));
                             punishName.setText(taskDetail.getNickname());
                             punishgroup.setText(groupName[taskDetail.getGroup()]);
                         }
