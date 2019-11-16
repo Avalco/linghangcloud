@@ -1,14 +1,19 @@
 package com.linghangcloud.android.GSON;
 
-import java.util.Date;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.*;
+
 
 public class TaskDetail {
+
+
     public int taskid;
     public String headline;
     public String details;
-    public Date createtime;
-    public String adminaccout;
-    public Date deadline;
+    public String createtime;
+    public String adminaccount;
+    public String deadline;
     public int group;
     public String nickname;
 
@@ -36,27 +41,27 @@ public class TaskDetail {
         this.details = details;
     }
 
-    public Date getCreatetime() {
+    public String getCreatetime() {
         return createtime;
     }
 
-    public void setCreatetime(Date createtime) {
+    public void setCreatetime(String createtime) {
         this.createtime = createtime;
     }
 
-    public String getAdminaccout() {
-        return adminaccout;
+    public String getAdminaccount() {
+        return adminaccount;
     }
 
-    public void setAdminaccout(String adminaccout) {
-        this.adminaccout = adminaccout;
+    public void setAdminaccount(String adminaccount) {
+        this.adminaccount = adminaccount;
     }
 
-    public Date getDeadline() {
+    public String getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Date deadline) {
+    public void setDeadline(String deadline) {
         this.deadline = deadline;
     }
 

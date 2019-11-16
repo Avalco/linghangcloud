@@ -5,12 +5,14 @@ import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -24,13 +26,19 @@ import android.widget.Toast;
 
 
 import com.linghangcloud.android.R;
+import com.linghangcloud.android.Util.Util;
+import com.linghangcloud.android.Util.Utility;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.Externalizable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.FileStore;
@@ -47,17 +55,21 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class FileFragment extends Fragment {
     private RecyclerView recyclerView;
     private EditText editText;
-    private List<HomeWork> homeWorkList = new ArrayList<>();
+    private final List<HomeWork> homeWorkList = new ArrayList<>();
     private TextView SubmitNum;
     private TextView SumNum;
     private CircleImageView submitButton;
     private int submit=5;
     private File z =null;
     private File apk=null;
+    private String taskid="28";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -110,13 +122,46 @@ public class FileFragment extends Fragment {
 
     //有待改善 网络连接
     private void InitList() {
-        for (int i=0;i<15;i++){
-            HomeWork homeWork = new HomeWork();
-            homeWork.setFileName("性感程序员，在线写BUG.avi");
-            homeWork.setUserName("全Android组最帅的男人");
-            homeWork.setSubmit(true);
-            homeWork.setFilePic(R.drawable.testpic);
-            homeWorkList.add(homeWork);
+        String url="http://fjxtest.club:9090/upload/showjobs?taskid="+taskid;
+        String token;
+        String head="access_token";
+        SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(getActivity());
+        token=prefs.getString("token","null");
+        Log.e("服务器数据 test:", "开始");
+        Util util =new Util();
+        try {
+            util.getwithokhttphead(url, token, head, new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String re =response.body().string();
+                    final List<HomeWork> list =new ArrayList<HomeWork>();
+                    try {
+                        JSONObject jsonObject=new JSONObject(re);
+                        JSONArray jsonArray=jsonObject.getJSONArray("data");
+                        for (int i=0;i<jsonArray.length();i++){
+                            list.add(Utility.handleFileResponse(jsonArray.getJSONObject(i).toString()));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                          homeWorkList=list;
+                        }
+                    });
+                    Log.e("服务器数据 test:", re );
+
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e("服务器数据 test:", "失败");
         }
     }
 
@@ -124,31 +169,36 @@ public class FileFragment extends Fragment {
     @Override
 //    回调函数
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Uri uri = data.getData();
-        Log.e("test：提取文件", "文件提取工作完成"+uri.toString() );
-        String path=getPath(getActivity(),uri);
-        File file =new File(path);
+        try {
+            Uri uri = data.getData();
+            Log.e("test：提取文件", "文件提取工作完成"+uri.toString() );
+            String path=getPath(getActivity(),uri);
+            File file =new File(path);
 
-        if (file.exists()){
-            Log.e("test：提取文件",file.getPath());
-            MyZIp.ZipFileCreateTest zipFileCreateTest=new MyZIp.ZipFileCreateTest();
-            try {
-                Log.e("test:", "onActivityResult: "+getContext().getExternalCacheDir() );
-                for (String x:file.getName().split(".")){
-                    Log.e("test:", "onActivityResultssss: "+x );
-                }
-                //getContext().getExternalCacheDir().toString()
-                zipFileCreateTest.zip(file.getName(),file,z.getPath());
-                if (new File(getContext().getExternalCacheDir().toString(),file.getName()+".zip").exists()){
-                    Log.e("test:", "onActivityResult: 存在" );
-                }
-                zipFileCreateTest.decompressing(new File(getContext().getExternalCacheDir().toString()+"//zip",file.getName()+".zip"),apk.getPath());
+            if (file.exists()){
+                Log.e("test：提取文件",file.getPath());
+                MyZIp.ZipFileCreateTest zipFileCreateTest=new MyZIp.ZipFileCreateTest();
+                try {
+                    Log.e("test:", "onActivityResult: "+getContext().getExternalCacheDir() );
+                    for (String x:file.getName().split(".")){
+                        Log.e("test:", "onActivityResultssss: "+x );
+                    }
+                    //getContext().getExternalCacheDir().toString()
+                    zipFileCreateTest.zip(file.getName(),file,z.getPath());
+                    if (new File(getContext().getExternalCacheDir().toString(),file.getName()+".zip").exists()){
+                        Log.e("test:", "onActivityResult: 存在" );
+                    }
+                    zipFileCreateTest.decompressing(new File(getContext().getExternalCacheDir().toString()+"//zip",file.getName()+".zip"),apk.getPath());
 
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e("test:", "onActivityResult: 获取失败" );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e("test:", "onActivityResult: 获取失败" );
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
     }
 
     //  提取文件的的工作
