@@ -124,31 +124,37 @@ public class FileFragment extends Fragment {
     @Override
 //    回调函数
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        try{
         Uri uri = data.getData();
         Log.e("test：提取文件", "文件提取工作完成"+uri.toString() );
         String path=getPath(getActivity(),uri);
         File file =new File(path);
 
-        if (file.exists()){
-            Log.e("test：提取文件",file.getPath());
-            MyZIp.ZipFileCreateTest zipFileCreateTest=new MyZIp.ZipFileCreateTest();
-            try {
-                Log.e("test:", "onActivityResult: "+getContext().getExternalCacheDir() );
-                for (String x:file.getName().split(".")){
-                    Log.e("test:", "onActivityResultssss: "+x );
-                }
-                //getContext().getExternalCacheDir().toString()
-                zipFileCreateTest.zip(file.getName(),file,z.getPath());
-                if (new File(getContext().getExternalCacheDir().toString(),file.getName()+".zip").exists()){
-                    Log.e("test:", "onActivityResult: 存在" );
-                }
-                zipFileCreateTest.decompressing(new File(getContext().getExternalCacheDir().toString()+"//zip",file.getName()+".zip"),apk.getPath());
+            if (file.exists()){
+                Log.e("test：提取文件",file.getPath());
+                MyZIp.ZipFileCreateTest zipFileCreateTest=new MyZIp.ZipFileCreateTest();
+                try {
+                    Log.e("test:", "onActivityResult: "+getContext().getExternalCacheDir() );
+                    for (String x:file.getName().split(".")){
+                        Log.e("test:", "onActivityResultssss: "+x );
+                    }
+                    //getContext().getExternalCacheDir().toString()
+                    zipFileCreateTest.zip(file.getName(),file,z.getPath());
+                    if (new File(getContext().getExternalCacheDir().toString(),file.getName()+".zip").exists()){
+                        Log.e("test:", "onActivityResult: 存在" );
+                    }
+                    zipFileCreateTest.decompressing(new File(getContext().getExternalCacheDir().toString()+"//zip",file.getName()+".zip"),apk.getPath());
 
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e("test:", "onActivityResult: 获取失败" );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e("test:", "onActivityResult: 获取失败" );
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
     }
 
 //  提取文件的的工作
