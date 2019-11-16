@@ -87,7 +87,6 @@ public class FileFragment extends Fragment {
 
         z.mkdirs();
         apk.mkdirs();
-
 //       提交按钮
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,7 +151,7 @@ public class FileFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                          homeWorkList=list;
+                            //   homeWorkList=list;
                         }
                     });
                     Log.e("服务器数据 test:", re );

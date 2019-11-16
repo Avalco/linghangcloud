@@ -13,6 +13,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -21,12 +22,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.linghangcloud.android.GSON.Token;
+import com.linghangcloud.android.GSON.UserInfo;
 import com.linghangcloud.android.Util.NetWorkUtil;
 import com.linghangcloud.android.Util.Utility;
 
 import java.io.IOException;
 import java.net.NetPermission;
-
 //登录界面
 public class LoginActivity extends AppCompatActivity {
     private Button login;
@@ -56,7 +57,6 @@ public class LoginActivity extends AppCompatActivity {
                             public void run() {
                                 Callback callback = new Callback() {
                                     private String content = "err1";
-
                                     @Override
                                     public void onFailure(Call call, IOException e) {
                                         runOnUiThread(new Runnable() {
@@ -67,14 +67,13 @@ public class LoginActivity extends AppCompatActivity {
                                             }
                                         });
                                     }
-
                                     @Override
                                     public void onResponse(Call call, Response response) throws IOException {
                                         String responsetext = null;
                                         if (response.body() != null) {
                                             responsetext = response.body().string();
                                         }
-                                        Token token = Utility.Handlogin(responsetext);
+                                        final Token token = Utility.Handlogin(responsetext);
                                         if (token != null && token.getCode() != null) {
                                             Log.d(TAG, "onResponse: " + token.getToken());
                                             switch (token.getCode()) {
@@ -83,25 +82,78 @@ public class LoginActivity extends AppCompatActivity {
                                                     SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit();
                                                     editor.putString("token", token.getToken());
                                                     editor.apply();
-                                                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                                                    startActivity(intent);
-                                                    finish();
+                                                    new Thread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            String url = "http://fjxtest.club:9090/user/showinfo?account=" + count;
+                                                            Utility.SendHttp(url, token.getToken(), new Callback() {
+                                                                @Override
+                                                                public void onFailure(Call call, IOException e) {
+                                                                    runOnUiThread(new Runnable() {
+                                                                        @Override
+                                                                        public void run() {
+                                                                            closeProgressDialog();
+                                                                            Toast.makeText(LoginActivity.this, "无法连接服务器", Toast.LENGTH_SHORT).show();
+                                                                        }
+                                                                    });
+                                                                }
+
+                                                                @Override
+                                                                public void onResponse(Call call, Response response) throws IOException {
+                                                                    String responsetext = null;
+                                                                    if (response.body() != null)
+                                                                        responsetext = response.body().string();
+                                                                    UserInfo userInfo = Utility.HandUserInfo(responsetext);
+                                                                    if (userInfo != null && userInfo.getCode() != null) {
+                                                                        switch (userInfo.getCode()) {
+                                                                            case "20009":
+                                                                                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit();
+                                                                                editor.putString("group", userInfo.getData().getGroup());
+                                                                                editor.apply();
+                                                                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                                                                closeProgressDialog();
+                                                                                startActivity(intent);
+                                                                                finish();
+                                                                                break;
+                                                                            case "20010":
+                                                                                content = "登录失败";
+                                                                                break;
+                                                                        }
+                                                                    }
+                                                                    runOnUiThread(new Runnable() {
+                                                                        @Override
+                                                                        public void run() {
+                                                                            closeProgressDialog();
+                                                                            Toast.makeText(LoginActivity.this, content, Toast.LENGTH_SHORT).show();
+                                                                        }
+                                                                    });
+                                                                }
+                                                            });
+                                                        }
+                                                    }).start();
                                                     break;
                                                 case "20002":
                                                     content = "用户不存在";
+                                                    runOnUiThread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            closeProgressDialog();
+                                                            Toast.makeText(LoginActivity.this, content, Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
                                                     break;
                                                 case "20003":
                                                     content = "密码错误";
+                                                    runOnUiThread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            closeProgressDialog();
+                                                            Toast.makeText(LoginActivity.this, content, Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
                                                     break;
                                             }
                                         }
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                closeProgressDialog();
-                                                Toast.makeText(LoginActivity.this, content, Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
                                     }
                                 };
                                 String url = "http://fjxtest.club:9090/user/login";
@@ -117,13 +169,11 @@ public class LoginActivity extends AppCompatActivity {
                                 okHttpClient.newCall(request).enqueue(callback);
                             }
                         }).start();
-
                     } else Toast.makeText(LoginActivity.this, "无法连接网络", Toast.LENGTH_SHORT).show();
                 } else Toast.makeText(LoginActivity.this, "账号和密码不能为空", Toast.LENGTH_SHORT).show();
             }
         });
     }
-
     private void showProgressDialog() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
@@ -132,7 +182,6 @@ public class LoginActivity extends AppCompatActivity {
         }
         progressDialog.show();
     }
-
     private void closeProgressDialog() {
         if (progressDialog != null) progressDialog.dismiss();
     }

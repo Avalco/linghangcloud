@@ -3,6 +3,9 @@ package com.linghangcloud.android;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,10 +20,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.linghangcloud.android.GSON.Tasks;
 import com.linghangcloud.android.UiAdapter.TaskAdapter;
 import com.linghangcloud.android.UiComponent.MyListView;
+import com.linghangcloud.android.Util.Utility;
 import com.linghangcloud.android.db.Task;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,12 +38,73 @@ private Button menu;
 private MyListView item;
 private DrawerLayout drawerLayout;
 private Button release;
+    private TextView title;
+    private List<Task> list;
+
+    private enum group {
+        后台组(0), 前端组(1), 安卓组(2);
+        private int value = 0;
+
+        group(int value) {
+            this.value = value;
+        }
+
+        public int getint() {
+            return value;
+        }
+    }
     private long exitTime = 0;
     private static final String TAG = "HomeActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final group group = HomeActivity.group.valueOf(preferences.getString("group", ""));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = "http://fjxtest.club:9090/task/findalltask?group=" + group.getint();
+                Utility.SendHttp(url, preferences.getString("token", ""), new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(HomeActivity.this, "无法连接服务器", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String responsetext = null;
+                        if (response.body() != null) responsetext = response.body().string();
+                        Tasks tasks = Utility.HandTasks(responsetext);
+                        if (tasks != null && tasks.getCode() != null) {
+                            switch (tasks.getCode()) {
+                                case "30010":
+                                    list = tasks.getData();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            item.setAdapter(new TaskAdapter(list, HomeActivity.this));
+                                            item.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                @Override
+                                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                    Intent intent = new Intent(HomeActivity.this, TaskDetailActivity.class);
+                                                    intent.putExtra("taskid", list.get(position).getTaskid());
+                                                    startActivity(intent);
+                                                }
+                                            });
+                                        }
+                                    });
+                            }
+                        }
+                    }
+                });
+            }
+        }).start();
         menu=findViewById(R.id.homemenu);
         item=findViewById(R.id.tasklist);
         release=findViewById(R.id.release);
@@ -49,19 +116,6 @@ private Button release;
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
-        List<Task> list=new ArrayList<>();
-        for (int i=0;i<30;i++)
-        {
-            list.add(new Task("任务"+i,"安卓","1111111111111111111四大发送到发四大发送到发发 撒旦法师手动阀手动阀asd速度手动阀阿斯顿发阿达东风发"," 11 ","2019-9-1","2019-9-2","1111"));
-        }
-        item.setAdapter(new TaskAdapter(list,HomeActivity.this));
-        item.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(HomeActivity.this, TaskDetailActivity.class);
-                startActivity(intent);
-            }
-        });
         release.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,7 +123,8 @@ private Button release;
                 startActivity(intent);
             }
         });
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        title = findViewById(R.id.title_home);
+        title.setText("任务中心(" + preferences.getString("group", "") + ")");
         Log.d(TAG, "onCreate: " + preferences.getString("token", null));
     }
 
