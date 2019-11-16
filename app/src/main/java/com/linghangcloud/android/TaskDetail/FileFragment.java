@@ -69,12 +69,12 @@ public class FileFragment extends Fragment {
         submitButton=view.findViewById(R.id.outputfile_button);
         z =new File(getContext().getExternalCacheDir()+"//zip");
         apk=new File(getContext().getExternalCacheDir()+"//apk");
-       InitList();
-       SubmitNum.setText(""+submit);
-       SumNum.setText(""+homeWorkList.size());
+        InitList();
+        SubmitNum.setText(""+submit);
+        SumNum.setText(""+homeWorkList.size());
 
-       z.mkdirs();
-       apk.mkdirs();
+        z.mkdirs();
+        apk.mkdirs();
 
 //       提交按钮
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -85,20 +85,20 @@ public class FileFragment extends Fragment {
                 }else{
                     //通过intent打开目标压缩包或文件
 //                    如果没有压缩包提示操作
-                     OpenContentToHomeWork();
+                    OpenContentToHomeWork();
                 }
 
             }
         });
 //       配置循环界面
-       HomeWorkAdpat homeWorkAdpat = new HomeWorkAdpat(homeWorkList,getContext(),editText);
+        HomeWorkAdpat homeWorkAdpat = new HomeWorkAdpat(homeWorkList,getContext(),editText);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(homeWorkAdpat);
         return view;
     }
 
-//打开文件管理器
+    //打开文件管理器
     private void OpenContentToHomeWork() {
         Uri uri = null;
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -124,40 +124,34 @@ public class FileFragment extends Fragment {
     @Override
 //    回调函数
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        try{
         Uri uri = data.getData();
         Log.e("test：提取文件", "文件提取工作完成"+uri.toString() );
         String path=getPath(getActivity(),uri);
         File file =new File(path);
 
-            if (file.exists()){
-                Log.e("test：提取文件",file.getPath());
-                MyZIp.ZipFileCreateTest zipFileCreateTest=new MyZIp.ZipFileCreateTest();
-                try {
-                    Log.e("test:", "onActivityResult: "+getContext().getExternalCacheDir() );
-                    for (String x:file.getName().split(".")){
-                        Log.e("test:", "onActivityResultssss: "+x );
-                    }
-                    //getContext().getExternalCacheDir().toString()
-                    zipFileCreateTest.zip(file.getName(),file,z.getPath());
-                    if (new File(getContext().getExternalCacheDir().toString(),file.getName()+".zip").exists()){
-                        Log.e("test:", "onActivityResult: 存在" );
-                    }
-                    zipFileCreateTest.decompressing(new File(getContext().getExternalCacheDir().toString()+"//zip",file.getName()+".zip"),apk.getPath());
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e("test:", "onActivityResult: 获取失败" );
+        if (file.exists()){
+            Log.e("test：提取文件",file.getPath());
+            MyZIp.ZipFileCreateTest zipFileCreateTest=new MyZIp.ZipFileCreateTest();
+            try {
+                Log.e("test:", "onActivityResult: "+getContext().getExternalCacheDir() );
+                for (String x:file.getName().split(".")){
+                    Log.e("test:", "onActivityResultssss: "+x );
                 }
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+                //getContext().getExternalCacheDir().toString()
+                zipFileCreateTest.zip(file.getName(),file,z.getPath());
+                if (new File(getContext().getExternalCacheDir().toString(),file.getName()+".zip").exists()){
+                    Log.e("test:", "onActivityResult: 存在" );
+                }
+                zipFileCreateTest.decompressing(new File(getContext().getExternalCacheDir().toString()+"//zip",file.getName()+".zip"),apk.getPath());
 
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("test:", "onActivityResult: 获取失败" );
+            }
+        }
     }
 
-//  提取文件的的工作
+    //  提取文件的的工作
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static String getPath(final Context context, final Uri uri) {
 

@@ -22,24 +22,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeWorkAdpat extends RecyclerView.Adapter<HomeWorkAdpat.ViewHolder> {
-    private List<HomeWork> homeWorkList=new ArrayList<>();
+    private List<HomeWork> homeWorkList = new ArrayList<>();
     private Context context;
     private EditText editText;
 
     public HomeWorkAdpat(List<HomeWork> homeWorkList, Context context, EditText editText) {
         this.homeWorkList = homeWorkList;
-                                                                                                                                                                                                        this.context = context;
-                                                                                                                                                                                                    }
+        this.context = context;
+    }
 
-                                                                                                                                                                                    @NonNull
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, final int viewType) {
-        View view =LayoutInflater.from(parent.getContext()).inflate(R.layout.item_homework,parent,false);
-        final ViewHolder viewHolder =new ViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_homework, parent, false);
+        final ViewHolder viewHolder = new ViewHolder(view);
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Log.e("<------------>", "本次FileFragment页面长按操作完成" );
+                Log.e("<------------>", "本次FileFragment页面长按操作完成");
                 return false;
             }
         });
@@ -55,7 +55,7 @@ public class HomeWorkAdpat extends RecyclerView.Adapter<HomeWorkAdpat.ViewHolder
         holder.DownloadButtom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context,"暂时不提供下载服务",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "暂时不提供下载服务", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -71,12 +71,13 @@ public class HomeWorkAdpat extends RecyclerView.Adapter<HomeWorkAdpat.ViewHolder
         private TextView FileName;
         private TextView UserName;
         private TextView DownloadButtom;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            FileName=itemView.findViewById(R.id.item_homework_filename);
-            FilePic=itemView.findViewById(R.id.item_homework_file_pic);
-            UserName=itemView.findViewById(R.id.item_homework_username);
-            DownloadButtom =itemView.findViewById(R.id.file_download_button);
+            FileName = itemView.findViewById(R.id.item_homework_filename);
+            FilePic = itemView.findViewById(R.id.item_homework_file_pic);
+            UserName = itemView.findViewById(R.id.item_homework_username);
+            DownloadButtom = itemView.findViewById(R.id.file_download_button);
         }
     }
 }
