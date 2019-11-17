@@ -46,6 +46,10 @@ public class HomeWorkAdpat extends RecyclerView.Adapter<HomeWorkAdpat.ViewHolder
         return viewHolder;
     }
 
+    public void finshHeadList() {
+        homeWorkList.clear();
+        notifyDataSetChanged();
+    }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         HomeWork homeWork = homeWorkList.get(position);

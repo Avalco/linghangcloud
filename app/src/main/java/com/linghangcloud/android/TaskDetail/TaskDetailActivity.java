@@ -59,7 +59,7 @@ public class TaskDetailActivity extends AppCompatActivity {
     private LinearLayout CommitTitle;
     private List<Commit> commitList = new ArrayList<>();
     private String UrlOfTask = "http://fjxtest.club:9090/task/findtask?taskid=";
-    private String taskid = "28";
+    private String taskid = "38";
     private String[] groupName = {"后台组大神", "前端组大神", "安卓组大神"};
 
     @RequiresApi(api = Build.VERSION_CODES.M)
