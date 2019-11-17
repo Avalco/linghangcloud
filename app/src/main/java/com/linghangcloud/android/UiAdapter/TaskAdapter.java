@@ -2,6 +2,12 @@ package com.linghangcloud.android.UiAdapter;
 
 import android.content.Context;
 import android.content.Intent;
+
+import java.text.SimpleDateFormat;
+
+import android.os.Build;
+import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +21,12 @@ import com.linghangcloud.android.TaskDetail.TaskDetailActivity;
 import com.linghangcloud.android.UiComponent.TaskItemLayout;
 import com.linghangcloud.android.db.Task;
 
+import java.util.Date;
 import java.util.List;
+
+import androidx.annotation.RequiresApi;
+
+import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
 public class TaskAdapter extends BaseAdapter {
     private List<Task> data;
@@ -47,6 +58,7 @@ public class TaskAdapter extends BaseAdapter {
         return 0;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View getView(final int position, View contentView, ViewGroup parent) {
         ViewHolder holder;
@@ -57,7 +69,7 @@ public class TaskAdapter extends BaseAdapter {
             holder.content = (TextView) contentView.findViewById(R.id.taskcontent);
             holder.createtime=(TextView)contentView.findViewById(R.id.createtime);
             holder.deadline=(TextView)contentView.findViewById(R.id.deadline);
-          //  holder.toTop = (TextView) contentView.findViewById(R.id.to_top);
+            //  holder.toTop = (TextView) contentView.findViewById(R.id.to_top);
             holder.delete = (TextView) contentView.findViewById(R.id.delete);
             holder.modify=(TextView)contentView.findViewById(R.id.modify);
             contentView.setTag(holder);
@@ -66,9 +78,15 @@ public class TaskAdapter extends BaseAdapter {
         }
         Task myModel = (Task) getItem(position);
         holder.taskhead.setText(myModel.getHeadline());
-        holder.content.setText(myModel.getContent());
-        holder.createtime.setText(myModel.getCreatetime()+"发布");
-        holder.deadline.setText(myModel.getDeadline()+"截止");
+        holder.content.setText(Html.fromHtml(myModel.getContent()));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        long time = Long.parseLong(myModel.getCreatetime());
+        Date date = new Date(time);
+        Log.d(TAG, "getView: " + simpleDateFormat.format(date));
+        holder.createtime.setText(simpleDateFormat.format(date) + "发布");
+        time = Long.parseLong(myModel.getDeadline());
+        date = new Date(time);
+        holder.deadline.setText(simpleDateFormat.format(date) + "截止");
 //        holder.content.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {

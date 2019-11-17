@@ -1,8 +1,11 @@
 package com.linghangcloud.android.db;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Task {
     private String headline; // 任务标题
     private  String group; // 组别
+    @SerializedName("details")
     private  String content; // 任务内容
     private String taskid; // 任务id
     private String createtime; // 创建时间

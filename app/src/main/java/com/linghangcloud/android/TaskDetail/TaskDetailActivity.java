@@ -68,6 +68,7 @@ public class TaskDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_detail);
         final Context context = getBaseContext();
+        taskid = getIntent().getStringExtra("taskid");
         input = findViewById(R.id.input);
         title = findViewById(R.id.task_title);
         detail = findViewById(R.id.task_detail);

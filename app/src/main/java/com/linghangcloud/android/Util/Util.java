@@ -31,9 +31,10 @@ public class Util {
         okHttpClient.newCall(request).enqueue(callback);
     }
 
-    public static void LoadFile(String headname,String head,String address,String taskid,String filename, File file, okhttp3.Callback callback)
-    {
-        OkHttpClient client=new OkHttpClient();
+
+
+    public static void LoadFile(String headname, String head, String address, String taskid, String filename, File file, okhttp3.Callback callback) {
+        OkHttpClient client = new OkHttpClient();
 
         RequestBody fileBody = RequestBody.create(MediaType.parse("zip"), file);//将file转换成RequestBody文件
         RequestBody requestBody = new MultipartBody.Builder()
@@ -42,8 +43,9 @@ public class Util {
                 .addFormDataPart("taskid",taskid)
                 .build();
 
-        Request request =new Request.Builder().url(address)
-                .addHeader(headname,head)
+        Request request = new Request.Builder().url(address)
+                .addHeader(headname, head)
+
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
