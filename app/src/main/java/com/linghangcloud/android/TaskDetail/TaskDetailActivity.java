@@ -62,6 +62,7 @@ public class TaskDetailActivity extends AppCompatActivity {
     private Button backbutton;
     private Button upButton;
     private TextView inputButton;
+    private TextView numofcommit;
     private LinearLayout TestLayout;
     private LinearLayout MainDetailLayout;
     private NestedScrollView scrollView;
@@ -82,6 +83,7 @@ public class TaskDetailActivity extends AppCompatActivity {
         input = findViewById(R.id.input);
         title = findViewById(R.id.task_title);
         detail = findViewById(R.id.task_detail);
+        numofcommit=findViewById(R.id.task_num_commit);
         punishName = findViewById(R.id.punnish_name);
         punishgroup = findViewById(R.id.punnish_group);
         inputButton = findViewById(R.id.task_input_button);
@@ -135,7 +137,7 @@ public class TaskDetailActivity extends AppCompatActivity {
                 if (input.getText().toString().equals("")) {
                     Toast.makeText(context, "没词儿了吧，小伙", Toast.LENGTH_SHORT).show();
                 } else {
-//                    showProgressDialog();
+                    showProgressDialog();
                     String aite[];
                     String commiters[] = new String[20];
                     boolean isNull = false;
@@ -177,6 +179,7 @@ public class TaskDetailActivity extends AppCompatActivity {
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
+                                            InitTestIndex();
                                             Toast.makeText(context,"走你",Toast.LENGTH_SHORT).show();
                                         }
                                     });
@@ -208,10 +211,11 @@ public class TaskDetailActivity extends AppCompatActivity {
                     }
 
                     scrollView.fullScroll(View.FOCUS_DOWN);
-//                    closeProgressDialog();
+                    closeProgressDialog();
                     input.setText("");
                     Toast.makeText(context, "走你", Toast.LENGTH_SHORT).show();
                 }
+
 
             }
         });
@@ -272,6 +276,7 @@ public class TaskDetailActivity extends AppCompatActivity {
                             detail.setText(Html.fromHtml(taskDetail.getDetails()));
                             punishName.setText(taskDetail.getNickname());
                             punishgroup.setText(groupName[taskDetail.getGroup()]);
+
                         }
                     });
 
@@ -314,6 +319,7 @@ public class TaskDetailActivity extends AppCompatActivity {
                             public void run() {
                                 Log.e("test ：评论","size = "+commitList.size());
                                 sortCommit(commitList);
+                                numofcommit.setText(String.valueOf(commitList.size()));
                                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
                                 commitre.setLayoutManager(layoutManager);
                                 CommitAdpat adpat = new CommitAdpat(commitList,getBaseContext(), input);
@@ -333,22 +339,6 @@ public class TaskDetailActivity extends AppCompatActivity {
 
     }
 
-    //关闭加载动画
-    private void closeProgressDialog() {
-        if (progressDialog != null) {
-            progressDialog.dismiss();
-        }
-    }
-
-    //打开加载动画
-    private void showProgressDialog() {
-        if (progressDialog == null) {
-            progressDialog = new ProgressDialog(getBaseContext());
-            progressDialog.setMessage("网络拼命加载中");
-            progressDialog.setCanceledOnTouchOutside(false);
-        }
-        progressDialog.show();
-    }
     private void sortCommit(List<Commit> commits){
         List<comunity> comunities=new ArrayList<>();
         List<Commit> others=new ArrayList<>();
@@ -388,5 +378,16 @@ public class TaskDetailActivity extends AppCompatActivity {
                 Log.e("test：sort ", ""+commitList.get(j).getCommentid()+" xx"+commitList.get(j).getParent());
             }
         }
+    }
+    private void showProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("发送中...");
+            progressDialog.setCanceledOnTouchOutside(false);
+        }
+        progressDialog.show();
+    }
+    private void closeProgressDialog() {
+        if (progressDialog != null) progressDialog.dismiss();
     }
 }

@@ -130,9 +130,9 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="?attr/actionBarSize"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginRight="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="5dp"
                             android:background="@android:color/white">
 
                             <de.hdodenhof.circleimageview.CircleImageView
@@ -184,7 +184,7 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
+                            android:layout_margin="5dp"
                             android:background="@android:color/white"
                             >
                             <TextView
@@ -192,7 +192,7 @@
                                 android:background="@android:color/white"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
+                                android:layout_margin="5dp"
                                 android:text="你的网络还有30s到达战场"
                                 android:textColor="@android:color/black" />
 
@@ -263,15 +263,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
                         android:layout_marginLeft="15dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:text="评论数"
-                        android:textSize="15dp"
+                        android:textSize="13dp"
                         android:textColor="@android:color/white" />
 
                     <TextView
+                        android:id="@+id/task_num_commit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="15"
+                        android:text="0"
                         android:layout_below="@id/num"
                         android:textColor="@android:color/white"
                         android:layout_marginLeft="30dp" />
