@@ -1,6 +1,7 @@
 package com.linghangcloud.android.Util;
 
 import com.google.gson.internal.LinkedHashTreeMap;
+import com.linghangcloud.android.GSON.SendCommit;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,9 +46,23 @@ public class Util {
 
         Request request = new Request.Builder().url(address)
                 .addHeader(headname, head)
-
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
+    }
+    public static  void posthttp (String headname, String head , String address , SendCommit sendCommit ,Callback callback){
+        OkHttpClient ct=new OkHttpClient();
+        RequestBody request=new MultipartBody.Builder()
+                .addFormDataPart("taskid",sendCommit.getTaskid())
+                .addFormDataPart("details",sendCommit.getDetail())
+                .addFormDataPart("account",sendCommit.getAccount())
+                .addFormDataPart("commentid",sendCommit.getCommentid())
+                .build();
+        Request requestBody=new Request.Builder()
+                .url(address)
+                .addHeader(headname,head)
+                .post(request)
+                .build();
+        ct.newCall(requestBody).enqueue(callback);
     }
 }

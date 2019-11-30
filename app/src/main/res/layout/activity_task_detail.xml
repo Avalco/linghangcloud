@@ -18,6 +18,7 @@
             android:background="@android:color/white">
             <!--头部导航栏 相对布局-->
             <RelativeLayout
+
                 android:id="@+id/tittle"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
@@ -56,6 +57,7 @@
 
             <!--被隐藏的评论吸顶框-->
             <LinearLayout
+                android:visibility="gone"
                 android:layout_below="@id/tittle"
                 android:id="@+id/task_test1"
                 android:layout_width="match_parent"
@@ -71,6 +73,7 @@
                 </LinearLayout>
 
                 <RelativeLayout
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -103,7 +106,7 @@
             <!--被隐藏的评论吸顶框结束-->
 
 
-            <ScrollView
+            <androidx.core.widget.NestedScrollView
                 android:id="@+id/task_scroll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -138,6 +141,7 @@
                                 android:layout_height="50dp"
                                 android:layout_centerVertical="true"
                                 android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
                                 android:src="@drawable/noneorder" />
 
                             <TextView
@@ -165,21 +169,35 @@
                                 android:layout_width="100dp"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentRight="true"
-                                android:text="查看"
+                                android:text=" "
                                 android:textColor="@android:color/holo_purple"
                                 android:gravity="center" />
                         </RelativeLayout>
                         <!--个人信息栏结束-->
 
                         <!--内容文本-->
-                        <TextView
-                            android:id="@+id/task_detail"
-                            android:background="@android:color/white"
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                        </RelativeLayout>
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
-                            android:text="你的网络还有30s到达战场"
-                            android:textColor="@android:color/black" />
+                            android:background="@android:color/white"
+                            >
+                            <TextView
+                                android:id="@+id/task_detail"
+                                android:background="@android:color/white"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="你的网络还有30s到达战场"
+                                android:textColor="@android:color/black" />
+
+                        </RelativeLayout>
+
 
                     </LinearLayout>
                     <!--上方为测试长度布局 线性布局-->
@@ -218,11 +236,11 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/task_commit_re"
-                        android:background="@color/background"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
+                        android:layout_height="wrap_content"
+                        android:background="@color/background"></androidx.recyclerview.widget.RecyclerView>
                 </LinearLayout>
-            </ScrollView>
+            </androidx.core.widget.NestedScrollView>
 
             <!--底部导航栏 相对布局-->
             <RelativeLayout

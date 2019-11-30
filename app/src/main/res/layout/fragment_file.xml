@@ -45,14 +45,26 @@
             android:src="@drawable/detailpic"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/outputfile_button"
+            android:layout_alignParentLeft="true"
 
+            android:layout_marginLeft="27dp"
+
+            android:layout_marginTop="-1dp"
+            android:layout_marginRight="16dp"
+            android:text="文件夹"
+            android:textColor="@android:color/white"
+            android:textSize="10dp"  />
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/outputfile_button"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="15dp"
             android:layout_marginRight="20dp"
             android:src="@drawable/outputfilepic" />
 
@@ -80,7 +92,7 @@
                 android:id="@+id/fragment_file_submitnumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                android:text="6"
                 android:textSize="20dp"
                 android:textColor="@android:color/white" />
 
@@ -96,7 +108,7 @@
                 android:id="@+id/fragment_file_sumnumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                android:text="6"
                 android:textSize="20dp"
                 android:textColor="@android:color/white" />
         </LinearLayout>

@@ -2,6 +2,7 @@ package com.linghangcloud.android.TaskDetail;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 
 
 import com.google.gson.JsonObject;
+import com.linghangcloud.android.GSON.FileList;
 import com.linghangcloud.android.R;
 import com.linghangcloud.android.Util.Util;
 import com.linghangcloud.android.Util.Utility;
@@ -42,6 +44,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.FileStore;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,11 +70,12 @@ public class FileFragment extends Fragment {
     private TextView SubmitNum;
     private TextView SumNum;
     private CircleImageView submitButton;
+    private CircleImageView myfile;
     private int submit=5;
     private File z =null;
     private HomeWorkAdpat homeWorkAdpat=null;
     private File apk=null;
-    private String taskid="38";
+    private String taskid=null;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -79,17 +83,23 @@ public class FileFragment extends Fragment {
         recyclerView=view.findViewById(R.id.file_re);
         SubmitNum=view.findViewById(R.id.fragment_file_submitnumber);
         SumNum = view.findViewById(R.id.fragment_file_sumnumber);
+        myfile = view.findViewById(R.id.fragment_button_submitfile);
         editText=view.findViewById(R.id.input);
         submitButton=view.findViewById(R.id.outputfile_button);
         z =new File(getContext().getExternalCacheDir()+"//zip");
         apk=new File(getContext().getExternalCacheDir()+"//apk");
+        taskid = getActivity().getIntent().getStringExtra("taskid");
         InitList();
-        SubmitNum.setText(""+submit);
-        SumNum.setText(""+homeWorkList.size());
 
         z.mkdirs();
         apk.mkdirs();
-
+//      文件夹按钮
+        myfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAssignFolder(apk.getPath()+File.separator+String.valueOf(taskid),getActivity());
+            }
+        });
 //       提交按钮
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,6 +147,7 @@ public class FileFragment extends Fragment {
                 public void onResponse(Call call, Response response) throws IOException {
                     String re =response.body().string();
                     final List<HomeWork> list =new ArrayList<HomeWork>();
+
                     try {
                         JSONObject jsonObject=new JSONObject(re);
                         JSONArray jsonArray=jsonObject.getJSONArray("data");
@@ -150,11 +161,13 @@ public class FileFragment extends Fragment {
                         @Override
                         public void run() {
                             //       配置循环界面
-                            homeWorkAdpat = new HomeWorkAdpat(list,getContext(),editText);
+                            homeWorkAdpat = new HomeWorkAdpat(list,getContext(),String.valueOf(taskid),editText);
+
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                             recyclerView.setLayoutManager(layoutManager);
                             recyclerView.setAdapter(homeWorkAdpat);
-
+                            Log.e("test: list数量", String.valueOf(homeWorkAdpat.getItemCount()) );
+                            SubmitNum.setText(String.valueOf(list.size()));
                         }
                     });
                     Log.e("服务器数据 test:", list.size()+" " );
@@ -190,12 +203,12 @@ public class FileFragment extends Fragment {
                     if (new File(getContext().getExternalCacheDir().toString(),file.getName()+".zip").exists()){
                         Log.e("test:", "onActivityResult: 存在" );
                     }
+
                     File file1=new File(getContext().getExternalCacheDir().toString()+"//zip",file.getName()+".zip");
                     update(file1);
                     if (file.exists()){
                         Log.e("test exit:", "存在" );
                     }
-                    zipFileCreateTest.decompressing(new File(getContext().getExternalCacheDir().toString()+"//zip",file.getName()+".zip"),apk.getPath());
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("test:", "onActivityResult: 获取失败" );
@@ -341,6 +354,25 @@ public class FileFragment extends Fragment {
                 InitList();
             }
         });
+    }
+
+    private void openAssignFolder(String path,Context context){
+        File file = new File(path);
+        if(null==file || !file.exists()){
+            Toast.makeText(context,"在这个任务，您还没有下载任何文件",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setDataAndType(Uri.fromFile(file), "*/*");
+        Log.e("test: 打开文件",intent.getDataString() );
+        try {
+            startActivity(intent);
+            //startActivity(Intent.createChooser(intent,"选择浏览工具"));
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
 

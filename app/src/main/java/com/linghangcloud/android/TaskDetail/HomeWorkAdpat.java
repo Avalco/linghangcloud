@@ -1,6 +1,7 @@
 package com.linghangcloud.android.TaskDetail;
 
 import android.content.Context;
+import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.linghangcloud.android.R;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.Inflater;
@@ -25,10 +28,13 @@ public class HomeWorkAdpat extends RecyclerView.Adapter<HomeWorkAdpat.ViewHolder
     private List<HomeWork> homeWorkList = new ArrayList<>();
     private Context context;
     private EditText editText;
-
-    public HomeWorkAdpat(List<HomeWork> homeWorkList, Context context, EditText editText) {
+    private File file;
+    private String name;
+    public HomeWorkAdpat(List<HomeWork> homeWorkList, Context context,String name ,EditText editText) {
         this.homeWorkList = homeWorkList;
         this.context = context;
+        this.file = new File(context.getExternalCacheDir()+"//apk");
+        this.name=name;
     }
 
     @NonNull
@@ -51,15 +57,22 @@ public class HomeWorkAdpat extends RecyclerView.Adapter<HomeWorkAdpat.ViewHolder
         notifyDataSetChanged();
     }
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        HomeWork homeWork = homeWorkList.get(position);
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+        final HomeWork homeWork = homeWorkList.get(position);
         holder.UserName.setText(homeWork.getUserName());
         holder.FileName.setText(homeWork.getFileName());
         Glide.with(context).load(homeWork.getFilePic()).into(holder.FilePic);
         holder.DownloadButtom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "暂时不提供下载服务", Toast.LENGTH_SHORT).show();
+                try {
+                    MyDownload.downLoadFromUrl(homeWork.getDownload(),"The "+name+" "+position+".zip",file.getPath()+File.separator+name);
+                    Toast.makeText(context,"下载完成",Toast.LENGTH_SHORT).show();
+                    Log.e("test", "下载成功" );
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.e("test：","下载失败" );
+                }
             }
         });
 
@@ -82,6 +95,7 @@ public class HomeWorkAdpat extends RecyclerView.Adapter<HomeWorkAdpat.ViewHolder
             FilePic = itemView.findViewById(R.id.item_homework_file_pic);
             UserName = itemView.findViewById(R.id.item_homework_username);
             DownloadButtom = itemView.findViewById(R.id.file_download_button);
+
         }
     }
 }

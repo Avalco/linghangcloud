@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.linghangcloud.android.GSON.Commit;
 import com.linghangcloud.android.R;
 
 import java.util.ArrayList;
@@ -23,11 +24,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CommitAdpat extends RecyclerView.Adapter<CommitAdpat.ViewHold> {
-    private List<Commit> commitList = new ArrayList<>();
+    private List<com.linghangcloud.android.GSON.Commit> commitList = new ArrayList<>();
     private Context context;
     private EditText contont;
 
-    public CommitAdpat(List<Commit> commitList, Context context, EditText editText) {
+    public CommitAdpat(List<com.linghangcloud.android.GSON.Commit> commitList, Context context, EditText editText) {
         this.commitList = commitList;
         this.context = context;
         contont = editText;
@@ -41,7 +42,7 @@ public class CommitAdpat extends RecyclerView.Adapter<CommitAdpat.ViewHold> {
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                StringBuilder builder = new StringBuilder(" @" + viewHold.uaername.getText() + " ");
+                StringBuilder builder = new StringBuilder(" @" + viewHold.id + " ");
                 String contentoftext = contont.getText().toString();
                 builder.append(contentoftext);
                 contont.setText(new String(builder));
@@ -56,14 +57,19 @@ public class CommitAdpat extends RecyclerView.Adapter<CommitAdpat.ViewHold> {
     @Override
     public void onBindViewHolder(@NonNull ViewHold holder, int position) {
         Commit commit = commitList.get(position);
-        holder.detail.setText(commit.getDetail());
-        holder.rename.setText(commit.getReuser());
-        Glide.with(context).load(commit.getPic()).into(holder.circleImageView);
-        holder.uaername.setText(commit.getCommituser());
-        holder.IsVisbale(commit.getReuser().equals(" "), position + 1 < commitList.size() && !(commitList.get(position + 1).getReuser().equals(" ")));
-        if (commit.getReuser().equals(" ")) {
+        holder.id=commit.getCommentid();
+        holder.detail.setText(commit.getDetails());
+        holder.rename.setText(commit.getNickname());
+        Glide.with(context).load(commit.getImgurl()).into(holder.circleImageView);
+        holder.uaername.setText(commit.getNickname());
+        holder.IsVisbale(commit.getParent()==-1, position + 1 < commitList.size() && !(commitList.get(position + 1).getParent()==-1));
+        if (commit.getParent()==-1) {
             holder.to.setVisibility(View.GONE);
+
         }
+        holder.to.setVisibility(View.GONE);
+        //上面的语句无法
+        holder.rename.setVisibility(View.GONE);
         holder.delete.setVisibility(View.GONE);
     }
 
@@ -87,7 +93,7 @@ public class CommitAdpat extends RecyclerView.Adapter<CommitAdpat.ViewHold> {
         private ImageView to;
         private LinearLayout headlayout;
         private RelativeLayout leftlayout;
-
+        private int id;
         public ViewHold(@NonNull View itemView) {
             super(itemView);
             circleImageView = itemView.findViewById(R.id.commit_pic);
