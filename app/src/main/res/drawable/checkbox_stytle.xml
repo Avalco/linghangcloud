@@ -1,0 +1,5 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_expand_more_black_24dp" android:state_checked="true" />
+    <item android:drawable="@drawable/ic_chevron_right_black_24dp" android:state_checked="false" />
+    <item android:drawable="@drawable/ic_chevron_right_black_24dp" />
+</selector>

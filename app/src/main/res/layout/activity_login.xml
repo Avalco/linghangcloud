@@ -6,17 +6,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#f5f5f5"
     tools:context=".LoginActivity">
-    <LinearLayout
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
         <ImageView
             android:maxHeight="200dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:adjustViewBounds="true"
+            android:src="@drawable/logo"
+            android:layout_marginBottom="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
 
-    </LinearLayout>
+    </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -43,6 +50,8 @@
                     android:paddingBottom="10dp"
                     android:paddingLeft="56dp"
                     android:layout_width="0dp"
+                    android:maxLines="1"
+                    android:singleLine="true"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:layout_weight="8"
@@ -108,7 +117,6 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <View
                     android:layout_width="0dp"
                     android:layout_height="1dp"
@@ -118,9 +126,11 @@
                     android:id="@+id/edit_password"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
+                    android:singleLine="true"
                     android:paddingLeft="56dp"
                     android:inputType="textPassword"
                     android:layout_width="0dp"
+                    android:maxLines="1"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:layout_weight="8"
@@ -132,7 +142,6 @@
                     android:layout_height="1dp"
                     android:layout_weight="1" />
             </LinearLayout>
-
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -169,7 +178,6 @@
                         android:layout_marginBottom="10dp"
                         android:layout_marginStart="4dp" />
                 </LinearLayout>
-
                 <View
                     android:layout_width="0dp"
                     android:layout_height="1dp"

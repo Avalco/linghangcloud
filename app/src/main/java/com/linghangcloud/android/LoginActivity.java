@@ -41,9 +41,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         login = findViewById(R.id.login);
         editcount = findViewById(R.id.edit_count);
         editpassword = findViewById(R.id.edit_password);
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,6 +111,11 @@ public class LoginActivity extends AppCompatActivity {
                                                                             case "20009":
                                                                                 SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit();
                                                                                 editor.putString("group", userInfo.getData().getGroup());
+                                                                                editor.putString("count", userInfo.getData().getAccount());
+                                                                                editor.putString("password", password);
+                                                                                editor.putString("imageurl", userInfo.getData().getImageurl());
+                                                                                editor.putString("nickname", userInfo.getData().getNickname());
+                                                                                editor.putString("classname", userInfo.getData().getClassname());
                                                                                 editor.apply();
                                                                                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                                                                 closeProgressDialog();
@@ -173,6 +180,13 @@ public class LoginActivity extends AppCompatActivity {
                 } else Toast.makeText(LoginActivity.this, "账号和密码不能为空", Toast.LENGTH_SHORT).show();
             }
         });
+        if (!preferences.getString("count", "").equals("") && !preferences.getString("password", "").equals("")) {
+            editcount.setText(preferences.getString("count", ""));
+            editpassword.setText(preferences.getString("password", ""));
+            count = preferences.getString("count", "");
+            password = preferences.getString("password", "");
+            login.performClick();
+        }
     }
     private void showProgressDialog() {
         if (progressDialog == null) {

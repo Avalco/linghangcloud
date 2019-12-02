@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.linghangcloud.android.GSON.Limit;
 import com.linghangcloud.android.GSON.Tasks;
 import com.linghangcloud.android.UiAdapter.TaskAdapter;
 import com.linghangcloud.android.UiComponent.MyListView;
@@ -57,9 +58,39 @@ private Button release;
     private static final String TAG = "HomeActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = "http://fjxtest.club:9090/user/limit?account=" + preferences.getString("count", "");
+                Utility.SendHttp(url, preferences.getString("token", ""), new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(HomeActivity.this, "无法连接服务器", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String responsetext = null;
+                        if (response.body() != null) responsetext = response.body().string();
+                        Limit limit = Utility.HandLimit(responsetext);
+                        Log.d(TAG, "onResponse: " + limit.getIsadmin());
+                        if (limit != null) {
+                            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this).edit();
+                            editor.putString("limit", limit.getIsadmin());
+                            editor.apply();
+                        }
+                    }
+                });
+            }
+        }).start();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         final group group = HomeActivity.group.valueOf(preferences.getString("group", ""));
         new Thread(new Runnable() {
             @Override

@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 
 import com.linghangcloud.android.GSON.FileList;
+import com.linghangcloud.android.GSON.Limit;
 import com.linghangcloud.android.GSON.Task;
 import com.linghangcloud.android.GSON.TaskDetail;
 import com.linghangcloud.android.GSON.Token;
@@ -96,6 +97,9 @@ public class Utility {
         return new Gson().fromJson(response, Tasks.class);
     }
 
+    public static Limit HandLimit(String response) {
+        return new Gson().fromJson(response, Limit.class);
+    }
     public static void SendHttp(String url, String token, okhttp3.Callback callback) {
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder()

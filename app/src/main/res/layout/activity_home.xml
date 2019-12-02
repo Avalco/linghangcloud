@@ -12,12 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="#EBEBEB"
         >
         <include layout="@layout/actionbar_home"/>
         <com.linghangcloud.android.UiComponent.MyListView
             android:id="@+id/tasklist"
+            android:layout_marginTop="4dp"
             android:overScrollMode="never"
+            android:listSelector="@android:color/transparent"
             android:scrollbars="none"
+            android:divider="@null"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>

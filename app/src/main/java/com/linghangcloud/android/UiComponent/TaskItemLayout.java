@@ -18,6 +18,7 @@ public class TaskItemLayout extends LinearLayout {
     private LayoutParams contentLayout;
     // 菜单是否打开
     private boolean isMenuOpen;
+    boolean has = false;
     // contentView最小的leftMargin
     private int minLeftMargin;
     // contentView最大的leftMargin
@@ -86,6 +87,7 @@ public class TaskItemLayout extends LinearLayout {
      * @param leftMargin
      */
     public void setLeftMargin(int leftMargin) {
+
         // 控制leftMargin不越界
         if (leftMargin > maxLeftMargin) {
             leftMargin = maxLeftMargin;
@@ -94,8 +96,11 @@ public class TaskItemLayout extends LinearLayout {
             leftMargin = minLeftMargin;
         }
         contentLayout.leftMargin = leftMargin;
+        contentLayout.bottomMargin = 12;
+//        if (!has)contentLayout.width=contentLayout.width-60;
         // 通过设置leftMargin，达到menu显示的效果
         contentView.setLayoutParams(contentLayout);
+        has = true;
     }
 
     /**
