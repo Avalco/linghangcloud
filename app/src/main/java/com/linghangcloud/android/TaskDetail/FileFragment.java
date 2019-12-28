@@ -97,7 +97,9 @@ public class FileFragment extends Fragment {
         myfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("test:打开文件", "地址："+apk.getPath()+File.separator+String.valueOf(taskid));
                 openAssignFolder(apk.getPath()+File.separator+String.valueOf(taskid),getActivity());
+
             }
         });
 //       提交按钮
@@ -184,6 +186,25 @@ public class FileFragment extends Fragment {
     @Override
 //    回调函数
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 3){
+            Log.e("test:", "file return test xx" );
+            try{
+                Uri uri=data.getData();
+                File file =new File(getPath(getContext(),uri));
+                if (file.exists()){
+                    Intent intent =new Intent();
+                    Log.e("test:", "查看文件 ："+uri.toString() );
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.setDataAndType(Uri.fromFile(file),"*/*");
+                    startActivity(intent);
+                }
+                return;
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
         try {
             Uri uri = data.getData();
             Log.e("test：提取文件", "文件提取工作完成"+uri.toString() );
@@ -362,17 +383,21 @@ public class FileFragment extends Fragment {
             Toast.makeText(context,"在这个任务，您还没有下载任何文件",Toast.LENGTH_SHORT).show();
             return;
         }
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.addCategory(Intent.CATEGORY_DEFAULT);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setDataAndType(Uri.fromFile(file), "*/*");
-        Log.e("test: 打开文件",intent.getDataString() );
+
         try {
-            startActivity(intent);
-            //startActivity(Intent.createChooser(intent,"选择浏览工具"));
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//        intent.addCategory(Intent.CATEGORY_DEFAULT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+            intent.setDataAndType(Uri.fromFile(file), "*/*");
+            Log.e("test: 打开文件",intent.getDataString() );
+            startActivityForResult(Intent.createChooser(intent,"选择浏览工具"),3);
+//            startActivity(Intent.createChooser(intent,"选择浏览工具"));
         } catch (ActivityNotFoundException e) {
+            Log.e("test:", "open File Error");
             e.printStackTrace();
         }
+
     }
 }
 
