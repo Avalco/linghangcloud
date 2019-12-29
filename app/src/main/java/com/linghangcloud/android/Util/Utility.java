@@ -9,6 +9,7 @@ import com.linghangcloud.android.GSON.Limit;
 import com.linghangcloud.android.GSON.Task;
 import com.linghangcloud.android.GSON.TaskDetail;
 import com.linghangcloud.android.GSON.Token;
+import com.linghangcloud.android.GSON.Users;
 import com.linghangcloud.android.TaskDetail.Commit;
 import com.linghangcloud.android.TaskDetail.HomeWork;
 
@@ -99,6 +100,9 @@ public class Utility {
 
     public static Limit HandLimit(String response) {
         return new Gson().fromJson(response, Limit.class);
+    }
+    public static Users HandUsers(String response) {
+        return new Gson().fromJson(response, Users.class);
     }
     public static void SendHttp(String url, String token, okhttp3.Callback callback) {
         OkHttpClient okHttpClient = new OkHttpClient();

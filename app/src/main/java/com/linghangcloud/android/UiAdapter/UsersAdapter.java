@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.linghangcloud.android.HomeActivity;
 import com.linghangcloud.android.R;
 import com.linghangcloud.android.TaskDetail.TaskDetailActivity;
@@ -82,6 +83,7 @@ public class UsersAdapter extends BaseAdapter {
         holder.nickname.setText(myModel.getNickname());
         holder.classn.setText(myModel.getClassname());
         holder.count.setText(myModel.getAccount());
+        if (!myModel.getImageurl().equals(""))Glide.with(mContext).load(myModel.getImageurl()).into(holder.image);
 //        holder.content.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {

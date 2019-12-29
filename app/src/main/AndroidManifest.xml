@@ -17,6 +17,10 @@
         <activity android:name=".TaskDetail.TaskDetailActivity"></activity>
         <activity android:name=".HomeActivity" />
         <activity android:name=".LoginActivity" />
+        <activity
+            android:name="com.onegravity.rteditor.media.choose.MediaChooserActivity"/>
+        <activity
+            android:name="com.onegravity.rteditor.media.crop.CropImageActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,5 +29,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

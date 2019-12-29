@@ -25,7 +25,6 @@ public class TaskItemLayout extends LinearLayout {
     private int maxLeftMargin = 0;
     // 滑动类
     private Scroller mScroller = null;
-
     public TaskItemLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         contentLayout = new LayoutParams(getScreenWidth(), LayoutParams.WRAP_CONTENT);

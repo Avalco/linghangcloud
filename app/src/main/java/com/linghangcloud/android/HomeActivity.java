@@ -39,6 +39,7 @@ private Button menu;
 private MyListView item;
 private DrawerLayout drawerLayout;
 private Button release;
+private Boolean Mlimit;
     private TextView title;
     private List<Task> list;
 
@@ -81,6 +82,7 @@ private Button release;
                         Limit limit = Utility.HandLimit(responsetext);
                         Log.d(TAG, "onResponse: " + limit.getIsadmin());
                         if (limit != null) {
+                            Mlimit=limit.getIsadmin().equals("true");
                             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this).edit();
                             editor.putString("limit", limit.getIsadmin());
                             editor.apply();
@@ -91,6 +93,16 @@ private Button release;
         }).start();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        item=findViewById(R.id.tasklist);
+        menu=findViewById(R.id.homemenu);
+        release=findViewById(R.id.release);
+        drawerLayout=findViewById(R.id.drawerlayout);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        if (!Mlimit)
+        {
+            release.setVisibility(View.GONE);
+            item.setScrollable(false);
+        }
         final group group = HomeActivity.group.valueOf(preferences.getString("group", ""));
         new Thread(new Runnable() {
             @Override
@@ -106,7 +118,6 @@ private Button release;
                             }
                         });
                     }
-
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String responsetext = null;
@@ -136,11 +147,7 @@ private Button release;
                 });
             }
         }).start();
-        menu=findViewById(R.id.homemenu);
-        item=findViewById(R.id.tasklist);
-        release=findViewById(R.id.release);
-        drawerLayout=findViewById(R.id.drawerlayout);
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,7 +165,6 @@ private Button release;
         title.setText("任务中心(" + preferences.getString("group", "") + ")");
         Log.d(TAG, "onCreate: " + preferences.getString("token", null));
     }
-
           @Override
            public boolean onKeyDown(int keyCode, KeyEvent event) {
             if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){

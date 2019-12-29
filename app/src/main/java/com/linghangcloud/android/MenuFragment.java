@@ -19,7 +19,9 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.linghangcloud.android.GSON.Limit;
 import com.linghangcloud.android.GSON.UserInfo;
+import com.linghangcloud.android.GSON.Users;
 import com.linghangcloud.android.UiAdapter.UsersAdapter;
 import com.linghangcloud.android.UiComponent.AddUserDialog;
 import com.linghangcloud.android.UiComponent.MyListView;
@@ -90,7 +92,7 @@ public class MenuFragment extends Fragment{
         View view= inflater.inflate(R.layout.fragment_menu,container,false);
         hadmodify = false;
         try {
-            Thread.sleep(100);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -98,7 +100,6 @@ public class MenuFragment extends Fragment{
         SetListener();
         return view;
     }
-
     private void Refresh() {
         new Thread(new Runnable() {
             @Override
@@ -149,7 +150,6 @@ public class MenuFragment extends Fragment{
             }
         }).start();
     }
-
     private void SetListener() {
         modifyinfo.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -213,17 +213,14 @@ public class MenuFragment extends Fragment{
                                 dialog.dismiss();
                                 Toast.makeText(getContext(), "xxxx", Toast.LENGTH_SHORT).show();
                             }
-
                             @Override
                             public void onNegtiveClick() {
                                 dialog.dismiss();
-                                Toast.makeText(getContext(), "ssss", Toast.LENGTH_SHORT).show();
                             }
                         }).show();
             }
         });
     }
-
     private void initView(View view) {
         preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         token = preferences.getString("token", "");
@@ -264,15 +261,46 @@ public class MenuFragment extends Fragment{
         if (limit) {
             GetUsers();
         }
-        List<User> userList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            userList.add(new User("10011" + i, "admin" + i, "admin", "class" + i, "安卓组"));
-        }
-        listView.setAdapter(new UsersAdapter(userList, getContext()));
         exit = view.findViewById(R.id.exit);
     }
 
     private void GetUsers() {
-
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = "http://fjxtest.club:9090/user/findallmember";
+                Utility.SendHttp(url, preferences.getString("token", ""), new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getContext(), "无法连接服务器", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String responsetext = null;
+                        if (response.body() != null) responsetext = response.body().string();
+                        Users users = Utility.HandUsers(responsetext);
+                        if (users != null&&users.getCode()!=null) {
+                            switch (users.getCode())
+                            {
+                                case "20011":
+                                    final List<User> userList =users.getData();
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            listView.setAdapter(new UsersAdapter(userList, getContext()));
+                                        }
+                                    });
+                                    break;
+                            }
+                        }
+                    }
+                });
+            }
+        }).start();
     }
 }

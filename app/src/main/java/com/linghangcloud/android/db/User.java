@@ -1,9 +1,13 @@
 package com.linghangcloud.android.db;
 
+import com.google.gson.annotations.SerializedName;
+
 public class User {
     private String account;
+    @SerializedName("imgurl")
     private String imageurl;
     private String nickname;
+    @SerializedName("className")
     private String classname;
     private String group;
 
