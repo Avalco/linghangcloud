@@ -1,23 +1,25 @@
 package com.linghangcloud.android.GSON;
-
 import com.google.gson.annotations.SerializedName;
-
 public class UserInfo {
     private String code;
     private data data;
 
     public class data {
         private String account;
+
+        private String imageurl;
+        private String nickname;
+        private String classname;
         @SerializedName("imgurl")
         private String imageurl;
         private String nickname;
         private String className;
         private String group;
-
         public data(String account, String imageurl, String nickname, String classname, String group) {
             this.account = account;
             this.imageurl = imageurl;
             this.nickname = nickname;
+            this.classname = classname;
             this.className = classname;
             this.group = group;
         }
@@ -47,11 +49,11 @@ public class UserInfo {
         }
 
         public String getClassname() {
-            return className;
+            return classname;
         }
 
         public void setClassname(String classname) {
-            this.className = classname;
+            this.classname = classname;
         }
 
         public String getGroup() {

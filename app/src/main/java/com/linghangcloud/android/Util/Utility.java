@@ -5,6 +5,11 @@ import android.util.Log;
 import com.google.gson.Gson;
 
 import com.linghangcloud.android.GSON.FileList;
+import com.linghangcloud.android.GSON.ReplyCommit;
+import com.linghangcloud.android.GSON.Task;
+import com.linghangcloud.android.GSON.TaskDetail;
+import com.linghangcloud.android.GSON.Token;
+import com.linghangcloud.android.R;
 import com.linghangcloud.android.GSON.Limit;
 import com.linghangcloud.android.GSON.Task;
 import com.linghangcloud.android.GSON.TaskDetail;
@@ -12,7 +17,6 @@ import com.linghangcloud.android.GSON.Token;
 import com.linghangcloud.android.GSON.Users;
 import com.linghangcloud.android.TaskDetail.Commit;
 import com.linghangcloud.android.TaskDetail.HomeWork;
-
 import com.linghangcloud.android.GSON.Tasks;
 import com.linghangcloud.android.GSON.Token;
 import com.linghangcloud.android.GSON.UserInfo;
@@ -48,6 +52,31 @@ public class Utility {
             return taskDetail;
         }catch (Exception e){
             e.printStackTrace();
+        }
+        return  null;
+    }
+    public static void handleReplyResponse(String reponse){
+        try{
+            JSONObject jsonObject=new JSONObject(reponse);
+            String data=jsonObject.getString("data").toString();
+            ReplyCommit replyCommit=new Gson().fromJson(data,ReplyCommit.class);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public static com.linghangcloud.android.GSON.Commit heandleCommitResponse(String response){
+        try {
+            String task =response;
+            Log.e("test ：评论", response);
+            com.linghangcloud.android.GSON.Commit commit=new Gson().fromJson(task, com.linghangcloud.android.GSON.Commit.class);
+
+            return commit;
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            Log.e("test ：评论", "shibai " );
         }
         return  null;
     }

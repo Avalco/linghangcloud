@@ -19,7 +19,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.linghangcloud.android.GSON.Limit;
 import com.linghangcloud.android.GSON.Tasks;
 import com.linghangcloud.android.UiAdapter.TaskAdapter;
@@ -93,6 +92,53 @@ private Boolean Mlimit;
         }).start();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final group group = HomeActivity.group.valueOf(preferences.getString("group", ""));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = "http://fjxtest.club:9090/task/findalltask?group=" + group.getint();
+                Utility.SendHttp(url, preferences.getString("token", ""), new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(HomeActivity.this, "无法连接服务器", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String responsetext = null;
+                        if (response.body() != null) responsetext = response.body().string();
+                        Tasks tasks = Utility.HandTasks(responsetext);
+                        if (tasks != null && tasks.getCode() != null) {
+                            switch (tasks.getCode()) {
+                                case "30010":
+                                    list = tasks.getData();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            item.setAdapter(new TaskAdapter(list, HomeActivity.this));
+                                            item.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                @Override
+                                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                    Intent intent = new Intent(HomeActivity.this, TaskDetailActivity.class);
+                                                    intent.putExtra("taskid", list.get(position).getTaskid());
+                                                    startActivity(intent);
+                                                }
+                                            });
+                                        }
+                                    });
+                            }
+                        }
+                    }
+                });
+            }
+        }).start();
+        menu=findViewById(R.id.homemenu);
         item=findViewById(R.id.tasklist);
         menu=findViewById(R.id.homemenu);
         release=findViewById(R.id.release);

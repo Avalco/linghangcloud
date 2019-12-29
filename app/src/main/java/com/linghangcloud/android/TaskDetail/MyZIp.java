@@ -29,7 +29,6 @@ public class MyZIp {
             }
 
         }
-
         private void zip(ZipOutputStream out, File file, String base) throws FileNotFoundException {
             if (file.isDirectory()) {
                 System.out.println("压缩文件目录" + base + "...");
@@ -67,7 +66,7 @@ public class MyZIp {
         }
 
 
-        public void decompressing(File file, String orderpath) {
+        public static  void decompressing(File file, String orderpath) {
             ZipInputStream zin;
             try {
                 System.out.println("开始解压");
