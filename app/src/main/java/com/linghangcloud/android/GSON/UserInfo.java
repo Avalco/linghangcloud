@@ -6,10 +6,6 @@ public class UserInfo {
 
     public class data {
         private String account;
-
-        private String imageurl;
-        private String nickname;
-        private String classname;
         @SerializedName("imgurl")
         private String imageurl;
         private String nickname;
@@ -19,7 +15,6 @@ public class UserInfo {
             this.account = account;
             this.imageurl = imageurl;
             this.nickname = nickname;
-            this.classname = classname;
             this.className = classname;
             this.group = group;
         }
@@ -48,12 +43,12 @@ public class UserInfo {
             this.nickname = nickname;
         }
 
-        public String getClassname() {
-            return classname;
+        public String getClassName() {
+            return className;
         }
 
-        public void setClassname(String classname) {
-            this.classname = classname;
+        public void setClassName(String className) {
+            this.className = className;
         }
 
         public String getGroup() {

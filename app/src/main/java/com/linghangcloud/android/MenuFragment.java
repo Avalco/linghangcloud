@@ -130,7 +130,7 @@ public class MenuFragment extends Fragment{
                                     editor.putString("count", userInfo.getData().getAccount());
                                     editor.putString("imageurl", userInfo.getData().getImageurl());
                                     editor.putString("nickname", userInfo.getData().getNickname());
-                                    editor.putString("classname", userInfo.getData().getClassname());
+                                    editor.putString("classname", userInfo.getData().getClassName());
                                     editor.apply();
                                     break;
                                 case "20010":

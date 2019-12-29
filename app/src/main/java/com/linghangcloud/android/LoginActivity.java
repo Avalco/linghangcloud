@@ -115,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                                                                                 editor.putString("password", password);
                                                                                 editor.putString("imageurl", userInfo.getData().getImageurl());
                                                                                 editor.putString("nickname", userInfo.getData().getNickname());
-                                                                                editor.putString("classname", userInfo.getData().getClassname());
+                                                                                editor.putString("classname", userInfo.getData().getClassName());
                                                                                 editor.apply();
                                                                                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                                                                 closeProgressDialog();

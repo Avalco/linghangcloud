@@ -92,7 +92,6 @@ private Boolean Mlimit;
         }).start();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         final group group = HomeActivity.group.valueOf(preferences.getString("group", ""));
         new Thread(new Runnable() {
             @Override
@@ -149,7 +148,6 @@ private Boolean Mlimit;
             release.setVisibility(View.GONE);
             item.setScrollable(false);
         }
-        final group group = HomeActivity.group.valueOf(preferences.getString("group", ""));
         new Thread(new Runnable() {
             @Override
             public void run() {
