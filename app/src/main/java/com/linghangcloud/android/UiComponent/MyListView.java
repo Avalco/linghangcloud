@@ -11,6 +11,7 @@ import android.widget.ListView;
 public class MyListView extends ListView {
     // 滑动速度追踪类
     private VelocityTracker mVelocityTracker;
+    private boolean scrollable;
     // ACTION_DOWN的坐标
     private float xDown;
     private float yDown;
@@ -27,10 +28,15 @@ public class MyListView extends ListView {
     private static final int TOUCH_STATE_X = 1; //横滑
     private static final int TOUCH_STATE_Y = 2; //竖滑
 
+    public void setScrollable(boolean scrollable) {
+        this.scrollable = scrollable;
+    }
+
     public MyListView(Context context, AttributeSet attrs) {
         super(context, attrs);
         MAX_X = dp2px(MAX_X);
         MAX_Y = dp2px(MAX_Y);
+        scrollable=true;
     }
     /**
      * 创建VelocityTracker对象，并将触摸事件加入到VelocityTracker当中
@@ -112,9 +118,9 @@ public class MyListView extends ListView {
                 moveY = ev.getY() - yDown;
                 if (mTouchState == TOUCH_STATE_X) {
                     // 如果是横滑，则设置leftMargin
-                    if (!mTouchView.isMenuOpen()) {
+                    if (!mTouchView.isMenuOpen()&&scrollable) {
                         mTouchView.setLeftMargin((int) moveX);
-                    } else {
+                    } else if (scrollable){
                         mTouchView.setLeftMargin((int) (moveX - mTouchView.getMenuWidth()));
                     }
                     return true;
@@ -133,7 +139,7 @@ public class MyListView extends ListView {
                     // 若滑动的距离是Menu宽度的一半，或者左滑速度大于200,
                     if (-moveX > mTouchView.getMenuWidth() / 2 || (moveX < 0 && getScrollVelocity() > 200)) {
                         // 若Menu是关闭的
-                        if (!mTouchView.isMenuOpen()) {
+                        if (!mTouchView.isMenuOpen()&&scrollable) {
                             // 滑动打开Menu
                             mTouchView.smoothOpenMenu();
                         }

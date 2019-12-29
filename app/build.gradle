@@ -16,7 +16,46 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+    task indexAssets {
+        description 'Index Build Variant assets for faster lookup by AssetManager'
+
+        ext.assetsSrcDir = file( "${projectDir}/src/main/assets" )
+
+        inputs.dir assetsSrcDir
+
+        doLast {
+            android.applicationVariants.each { target ->
+                // create index
+                def contents = ""
+                def tree = fileTree(dir: "${ext.assetsSrcDir}", include: ['**/*.ttf'], exclude: ['**/.svn/**', '*.index'])
+                // use this instead if you have assets folders in each flavor:
+                // def tree = fileTree(dir: "${ext.variantPath}", exclude: ['**/.svn/**', '*.index'])
+                tree.visit { fileDetails ->
+                    contents += "${fileDetails.relativePath}" + "\n"
+                }
+
+                // create index file
+                def assetIndexFile = new File("${ext.assetsSrcDir}/assets.index")
+                assetIndexFile.write contents
+            }
+        }
+    }
+
+    indexAssets.dependsOn {
+        tasks.matching { task -> task.name.startsWith( 'merge' ) && task.name.endsWith( 'Assets' ) }
+    }
+
+    tasks.withType( JavaCompile ) {
+        compileTask -> compileTask.dependsOn indexAssets
+    }
+
+    indexAssets
 }
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -30,4 +69,5 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
     implementation 'com.google.code.gson:gson:2.7'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    implementation 'com.1gravity:android-rteditor:1.6.7'
 }

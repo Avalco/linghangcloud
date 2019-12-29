@@ -32,8 +32,6 @@ public class Util {
         okHttpClient.newCall(request).enqueue(callback);
     }
 
-
-
     public static void LoadFile(String headname, String head, String address, String taskid, String filename, File file, okhttp3.Callback callback) {
         OkHttpClient client = new OkHttpClient();
 

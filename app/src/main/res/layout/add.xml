@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_marginTop="4dp"
+        android:id="@+id/ima_add"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_add_circle_outline_black_24dp" />
+</LinearLayout>

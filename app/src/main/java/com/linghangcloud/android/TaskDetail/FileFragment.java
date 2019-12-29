@@ -67,15 +67,18 @@ public class FileFragment extends Fragment {
     private RecyclerView recyclerView;
     private EditText editText;
     private  List<HomeWork> homeWorkList = new ArrayList<>();
+    private List<HomeWork> homeWorkList = new ArrayList<>();
     private TextView SubmitNum;
     private TextView SumNum;
     private CircleImageView submitButton;
     private CircleImageView myfile;
     private int submit=5;
-    private File z =null;
     private HomeWorkAdpat homeWorkAdpat=null;
     private File apk=null;
     private String taskid=null;
+    private HomeWorkAdpat homeWorkAdpat = null;
+    private File apk=null;
+    private String taskid = "38";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -173,6 +176,13 @@ public class FileFragment extends Fragment {
                         }
                     });
                     Log.e("服务器数据 test:", list.size()+" " );
+                            homeWorkAdpat = new HomeWorkAdpat(list, getContext(), editText);
+                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                            recyclerView.setLayoutManager(layoutManager);
+                            recyclerView.setAdapter(homeWorkAdpat);
+                        }
+                    });
+                    Log.e("服务器数据 test:", list.size() + " ");
 
                 }
             });
@@ -230,6 +240,12 @@ public class FileFragment extends Fragment {
                     if (file.exists()){
                         Log.e("test exit:", "存在" );
                     }
+                    File file1 = new File(getContext().getExternalCacheDir().toString() + "//zip", file.getName() + ".zip");
+                    update(file1);
+                    if (file.exists()) {
+                        Log.e("test exit:", "存在");
+                    }
+                    zipFileCreateTest.decompressing(new File(getContext().getExternalCacheDir().toString()+"//zip",file.getName()+".zip"),apk.getPath());
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("test:", "onActivityResult: 获取失败" );
@@ -347,7 +363,6 @@ public class FileFragment extends Fragment {
                 "application/vnd.android.package-archive");
         context.startActivity(intent);
     }
-
     public void update(File file){
         String url="http://fjxtest.club:9090/upload/job";
         String token;
@@ -358,6 +373,16 @@ public class FileFragment extends Fragment {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.e("文件发送 test :", "发送失败" );
+    public void update(File file) {
+        String url = "http://fjxtest.club:9090/upload/job";
+        String token;
+        String head = "access_token";
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        token = prefs.getString("token", "null");
+        Util.LoadFile(head, token, url, taskid, file.getName(), file, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("文件发送 test :", "发送失败");
                 e.printStackTrace();
             }
 
@@ -370,6 +395,13 @@ public class FileFragment extends Fragment {
                     Log.e("test 发送",x );
                 } catch (JSONException e) {
                     Log.e("文件发送解析 test ：", "失败" );
+                String body = response.body().string();
+                try {
+                    JSONObject jsonObject = new JSONObject(body);
+                    String x = String.valueOf(jsonObject.getInt("code"));
+                    Log.e("test 发送", x);
+                } catch (JSONException e) {
+                    Log.e("文件发送解析 test ：", "失败");
                     e.printStackTrace();
                 }
                 InitList();

@@ -8,5 +8,20 @@
     android:layout_height="match_parent"
     tools:context=".ReleaseActivity">
 <include layout="@layout/actionbar_release"/>
-    
+    <com.onegravity.rteditor.RTEditText
+        android:id="@+id/rtEditText"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:imeOptions="actionDone|flagNoEnterAction"
+        android:inputType="textMultiLine|textAutoCorrect|textCapSentences" />
+    <LinearLayout
+        android:id="@+id/rte_toolbar_container"
+        android:layout_marginBottom="5dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include layout="@layout/rte_toolbar_character" />
+        <include layout="@layout/rte_toolbar_paragraph" />
+    </LinearLayout>
 </LinearLayout>
