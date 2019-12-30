@@ -196,16 +196,13 @@
                         android:layout_alignParentBottom="true"
                         android:padding="10dp"
                         android:layout_height="wrap_content">
-
                         <LinearLayout
                             android:id="@+id/exit"
                             android:layout_width="0dp"
                             android:orientation="vertical"
                             android:layout_height="wrap_content"
                             android:layout_weight="1">
-
                             <ImageView
-
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
                                 android:layout_marginLeft="10dp"

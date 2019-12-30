@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 
 import com.linghangcloud.android.GSON.FileList;
+import com.linghangcloud.android.GSON.ImageUrl;
 import com.linghangcloud.android.GSON.ReplyCommit;
 import com.linghangcloud.android.GSON.Task;
 import com.linghangcloud.android.GSON.TaskDetail;
@@ -133,11 +134,25 @@ public class Utility {
     public static Users HandUsers(String response) {
         return new Gson().fromJson(response, Users.class);
     }
+
+    public static ImageUrl HandImageurl(String response) {
+        return new Gson().fromJson(response, ImageUrl.class);
+    }
     public static void SendHttp(String url, String token, okhttp3.Callback callback) {
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder()
                 .addHeader("access_token", token)
                 .url(url)
+                .build();
+        okHttpClient.newCall(request).enqueue(callback);
+    }
+
+    public static void PostHttp(String url, String token, RequestBody requestBody, okhttp3.Callback callback) {
+        OkHttpClient okHttpClient = new OkHttpClient();
+        Request request = new Request.Builder()
+                .addHeader("access_token", token)
+                .url(url)
+                .post(requestBody)
                 .build();
         okHttpClient.newCall(request).enqueue(callback);
     }
