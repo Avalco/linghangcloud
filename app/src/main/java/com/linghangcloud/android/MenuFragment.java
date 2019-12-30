@@ -39,6 +39,7 @@ import com.linghangcloud.android.GSON.ImageUrl;
 import com.linghangcloud.android.GSON.Limit;
 import com.linghangcloud.android.GSON.UserInfo;
 import com.linghangcloud.android.GSON.Users;
+import com.linghangcloud.android.UiAdapter.AddUserAdapter;
 import com.linghangcloud.android.UiAdapter.UsersAdapter;
 import com.linghangcloud.android.UiComponent.AddUserDialog;
 import com.linghangcloud.android.UiComponent.MyListView;
@@ -95,6 +96,9 @@ public class MenuFragment extends Fragment{
     private final static int FAIL_UPDATE_IMG = 2000;
     private final static int FAIL_UPDATE_INFO = 2001;
     private final static int SUCCESS_UPDATE_INFO = 2002;
+    private final static int CANNOT_USE_INTERNET = 2003;
+    private final static int SUCCESS_REGISTER = 2004;
+    private final static int FAIL_REGISTER = 2005;
     ImagePicker imagePicker;
     private SharedPreferences preferences;
     private Handler mHandler = new Handler() {
@@ -116,8 +120,19 @@ public class MenuFragment extends Fragment{
                     initui();
                     break;
                 case SUCCESS_UPDATE_INFO:
+                case SUCCESS_REGISTER:
                     initui();
                     Refresh();
+                    break;
+                case CANNOT_USE_INTERNET:
+                    getActivity().runOnUiThread(() -> {
+                        Toast.makeText(getContext(), "无法连接服务器", Toast.LENGTH_SHORT).show();
+                    });
+                    break;
+                case FAIL_REGISTER:
+                    getActivity().runOnUiThread(() -> {
+                        Toast.makeText(getContext(), "账号" + msg.obj + "已存在", Toast.LENGTH_SHORT).show();
+                    });
                     break;
             }
         }
@@ -198,6 +213,9 @@ public class MenuFragment extends Fragment{
             adduser.setVisibility(View.GONE);
         }
         if (!imageurl.equals("")) Glide.with(getContext()).load(imageurl).into(imageView);
+        if (limit) {
+            GetUsers();
+        }
     }
     private void Refresh() {
         new Thread(new Runnable() {
@@ -470,8 +488,56 @@ public class MenuFragment extends Fragment{
                         setOnClickBottomListener(new AddUserDialog.OnClickBottomListener() {
                             @Override
                             public void onPositiveClick() {
+                                List<EditText> list = dialog.getAddUserAdapter().getData();
+                                for (EditText editText : list) {
+                                    if (!editText.getText().toString().equals("")) {
+                                        new Thread(() -> {
+                                            final HomeActivity.group group = HomeActivity.group.valueOf(preferences.getString("group", ""));
+                                            String i = "" + group.getint();
+                                            RequestBody requestBody = new FormBody.Builder()
+                                                    .add("account", editText.getText().toString())
+                                                    .add("psd", editText.getText().toString())
+                                                    .add("group", i)
+                                                    .build();
+                                            Utility.PostHttp("http://fjxtest.club:9090/user/register", token, requestBody, new Callback() {
+                                                @Override
+                                                public void onFailure(Call call, IOException e) {
+                                                    Message message = mHandler.obtainMessage();
+                                                    message.what = CANNOT_USE_INTERNET;
+                                                    message.obj = editText.getText().toString();
+                                                    mHandler.sendMessage(message);
+                                                }
+
+                                                @Override
+                                                public void onResponse(Call call, Response response) throws IOException {
+                                                    String responsetext = response.body().string();
+                                                    ImageUrl imageUrl = Utility.HandImageurl(responsetext);
+                                                    if (imageUrl != null && imageUrl.code != null) {
+                                                        switch (imageUrl.code) {
+                                                            case "20005":
+                                                                Message message = mHandler.obtainMessage();
+                                                                message.what = FAIL_REGISTER;
+                                                                message.obj = editText.getText().toString();
+                                                                mHandler.sendMessage(message);
+                                                                break;
+                                                            case "20004":
+                                                                Message mmessage = mHandler.obtainMessage();
+                                                                mmessage.what = SUCCESS_REGISTER;
+                                                                mHandler.sendMessage(mmessage);
+                                                                break;
+                                                        }
+                                                    } else {
+                                                        Message message = mHandler.obtainMessage();
+                                                        message.what = CANNOT_USE_INTERNET;
+                                                        message.obj = editText.getText().toString();
+                                                        mHandler.sendMessage(message);
+                                                    }
+                                                }
+                                            });
+                                        }).start();
+                                    }
+                                }
                                 dialog.dismiss();
-                                Toast.makeText(getContext(), "xxxx", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -499,9 +565,6 @@ public class MenuFragment extends Fragment{
         admin = view.findViewById(R.id.admin);
         exit = view.findViewById(R.id.exit);
         refreshui();
-        if (limit) {
-            GetUsers();
-        }
 
     }
 
@@ -545,7 +608,7 @@ public class MenuFragment extends Fragment{
                                     getActivity().runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            listView.setAdapter(new UsersAdapter(userList, getContext()));
+                                            listView.setAdapter(new UsersAdapter(userList, getContext(), token));
                                         }
                                     });
                                     break;

@@ -9,6 +9,7 @@ import android.widget.Adapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +26,7 @@ public class AddUserAdapter extends BaseAdapter {
     private int n;
     private List<EditText> data;
     private Context mContext;
-
+    private List<String> editTextslist;
     public AddUserAdapter(int n, Context mContext) {
         this.n = n;
         this.mContext = mContext;
@@ -59,6 +60,9 @@ public class AddUserAdapter extends BaseAdapter {
             contentView = LayoutInflater.from(mContext).inflate(R.layout.adduser_item, parent, false);
             holder.user = (EditText) contentView.findViewById(R.id.user_count);
             data.add(holder.user);
+            if (editTextslist != null && position < editTextslist.size()) {
+                holder.user.setText(editTextslist.get(position));
+            }
             contentView.setTag(holder);
         } else {
             holder = new AddUserAdapter.ViewHolder();
@@ -68,12 +72,23 @@ public class AddUserAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     n++;
+                    if (editTextslist == null) editTextslist = new ArrayList<>();
+                    editTextslist.clear();
+                    for (EditText editText : data) {
+                        editTextslist.add(editText.getText().toString());
+                    }
+                    data.clear();
                     notifyDataSetChanged();
                 }
             });
         }
         return contentView;
     }
+
+    /**
+     * Notifies the attached observers that the underlying data has been changed
+     * and any View reflecting the data set should refresh itself.
+     */
 
     private static class ViewHolder {
         EditText user;

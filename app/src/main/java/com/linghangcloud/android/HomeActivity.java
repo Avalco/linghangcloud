@@ -42,7 +42,7 @@ private Boolean Mlimit;
     private TextView title;
     private List<Task> list;
 
-    private enum group {
+    public enum group {
         后台组(0), 前端组(1), 安卓组(2);
         private int value = 0;
 

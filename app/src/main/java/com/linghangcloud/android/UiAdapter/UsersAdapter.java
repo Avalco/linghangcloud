@@ -3,9 +3,12 @@ package com.linghangcloud.android.UiAdapter;
 import android.content.Context;
 import android.content.Intent;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,10 +20,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.linghangcloud.android.GSON.ImageUrl;
 import com.linghangcloud.android.HomeActivity;
 import com.linghangcloud.android.R;
 import com.linghangcloud.android.TaskDetail.TaskDetailActivity;
 import com.linghangcloud.android.UiComponent.TaskItemLayout;
+import com.linghangcloud.android.Util.Utility;
 import com.linghangcloud.android.db.Task;
 import com.linghangcloud.android.db.User;
 
@@ -28,18 +33,49 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.RequiresApi;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
 public class UsersAdapter extends BaseAdapter {
     private List<User> data;
     private Context mContext;
+    private String token;
 
-    public UsersAdapter(List<User> data, Context mContext) {
+    public UsersAdapter(List<User> data, Context mContext, String token) {
         this.data = data;
         this.mContext = mContext;
+        this.token = token;
     }
 
+    private Handler myhandler = new Handler() {
+        /**
+         * Subclasses must implement this to receive messages.
+         *
+         * @param msg
+         */
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 2:
+                    data.remove(msg.arg1);
+                    TaskItemLayout taskItemLayout = (TaskItemLayout) msg.obj;
+                    taskItemLayout.smoothCloseMenu();
+                    notifyDataSetChanged();
+                    Toast.makeText(mContext, "已删除", Toast.LENGTH_SHORT).show();
+                    break;
+                case 1:
+                    TaskItemLayout taskItemLayout1 = (TaskItemLayout) msg.obj;
+                    taskItemLayout1.smoothCloseMenu();
+                    Toast.makeText(mContext, "删除失败", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
     @Override
     public int getCount() {
         if (data != null) {
@@ -109,15 +145,54 @@ public class UsersAdapter extends BaseAdapter {
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                data.remove(position);
-                finalContentView.smoothCloseMenu();
-                notifyDataSetChanged();
-                Toast.makeText(mContext, "已删除", Toast.LENGTH_SHORT).show();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        RequestBody requestBody = new FormBody.Builder()
+                                .add("account", data.get(position).getAccount())
+                                .build();
+                        Utility.PostHttp("http://fjxtest.club:9090/user/deleteuser", token, requestBody, new Callback() {
+                            @Override
+                            public void onFailure(Call call, IOException e) {
+                                Message message = myhandler.obtainMessage();
+                                message.what = 1;
+                                message.obj = finalContentView;
+                                myhandler.sendMessage(message);
+                            }
+
+                            @Override
+                            public void onResponse(Call call, Response response) throws IOException {
+                                String responsetext = response.body().string();
+                                ImageUrl imageUrl = Utility.HandImageurl(responsetext);
+                                if (imageUrl != null && imageUrl.code != null) {
+                                    switch (imageUrl.code) {
+                                        case "20013":
+                                            Message message = myhandler.obtainMessage();
+                                            message.arg1 = position;
+                                            message.obj = finalContentView;
+                                            message.what = 2;
+                                            myhandler.sendMessage(message);
+                                            break;
+                                        default:
+                                            Message mmessage = myhandler.obtainMessage();
+                                            mmessage.what = 1;
+                                            mmessage.obj = finalContentView;
+                                            myhandler.sendMessage(mmessage);
+                                    }
+                                } else {
+                                    Message message = myhandler.obtainMessage();
+                                    message.what = 1;
+                                    message.obj = finalContentView;
+                                    myhandler.sendMessage(message);
+                                }
+                            }
+                        });
+                    }
+                }).start();
             }
         });
         return contentView;
     }
-
     private static class ViewHolder {
         ImageView image;
         TextView count;

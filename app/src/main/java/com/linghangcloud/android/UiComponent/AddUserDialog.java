@@ -14,7 +14,23 @@ import com.linghangcloud.android.UiAdapter.AddUserAdapter;
 public class AddUserDialog extends Dialog {
     private Button positiveBn, negtiveBn;
     private ListView listView;
+    private AddUserAdapter addUserAdapter;
 
+    public ListView getListView() {
+        return listView;
+    }
+
+    public AddUserAdapter getAddUserAdapter() {
+        return addUserAdapter;
+    }
+
+    public void setAddUserAdapter(AddUserAdapter addUserAdapter) {
+        this.addUserAdapter = addUserAdapter;
+    }
+
+    public void setListView(ListView listView) {
+        this.listView = listView;
+    }
     public AddUserDialog(Context context) {
         super(context, R.style.CustomDialog);
     }
@@ -74,7 +90,8 @@ public class AddUserDialog extends Dialog {
      * 初始化界面控件的显示数据
      */
     private void refreshView() {
-        listView.setAdapter(new AddUserAdapter(1, getContext()));
+        addUserAdapter = new AddUserAdapter(1, getContext());
+        listView.setAdapter(addUserAdapter);
     }
 
     @Override
